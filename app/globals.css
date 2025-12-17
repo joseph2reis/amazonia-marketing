@@ -1,8 +1,7 @@
 @import "tailwindcss";
 
-/* 🌿 Tema Amazônia */
 @theme inline {
-  /* ===== Base ===== */
+
   --color-primary: var(--color-green-700);
   --color-primary-soft: var(--color-green-100);
 

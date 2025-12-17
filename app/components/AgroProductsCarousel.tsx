@@ -56,8 +56,8 @@ export default function AgroProductsCarousel(): JSX.Element {
               <AgroCard
                 title={product.name}
                 description={product.description}
-                image={product.image}
-                href={product.href}
+                image={product.images[0]}
+                href={`/produto/${product.slug}`}
                 footer={
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold text-primary">
