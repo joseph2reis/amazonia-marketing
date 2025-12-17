@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/* 🌿 Tema Amazônia */
+@theme inline {
+  /* ===== Base ===== */
+  --color-primary: var(--color-green-700);
+  --color-primary-soft: var(--color-green-100);
+
+  --color-secondary: var(--color-purple-700);
+  --color-secondary-soft: var(--color-purple-100);
+
+  --color-tertiary: var(--color-slate-500);
+  --color-surface: var(--color-slate-50);
+  --color-surface-strong: var(--color-white);
+
+  --color-text: var(--color-slate-800);
+  --color-text-muted: var(--color-slate-500);
+  --color-border: var(--color-slate-200);
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme inline {
+    --color-primary: var(--color-green-500);
+    --color-primary-soft: var(--color-green-900);
+
+    --color-secondary: var(--color-purple-500);
+    --color-secondary-soft: var(--color-purple-900);
+
+    --color-tertiary: var(--color-slate-400);
+    --color-surface: var(--color-slate-900);
+    --color-surface-strong: var(--color-slate-800);
+
+    --color-text: var(--color-slate-100);
+    --color-text-muted: var(--color-slate-400);
+    --color-border: var(--color-slate-700);
+  }
+}
