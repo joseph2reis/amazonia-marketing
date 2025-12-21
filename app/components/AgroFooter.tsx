@@ -19,7 +19,7 @@ export default function AgroFooter() {
     <footer className="bg-surface-strong border-t border-border">
       <div className="mx-auto max-w-7xl px-6 py-20">
         {/* Newsletter */}
-        <div className="mb-20 rounded-3xl bg-gradient-to-r from-primary to-secondary p-10 text-white">
+        <div className="mb-20 rounded-3xl bg-linear-to-r from-primary to-secondary p-10 text-white">
           <div className="grid gap-8 md:grid-cols-2 md:items-center">
             <div>
               <h3 className="text-2xl font-bold">
@@ -60,6 +60,7 @@ export default function AgroFooter() {
                   text-white
                   hover:bg-slate-800
                   transition
+                  whitespace-nowrap
                 "
               >
                 Inscrever-se

@@ -1,36 +1,44 @@
 @import "tailwindcss";
 
-@theme inline {
 
-  --color-primary: var(--color-green-700);
-  --color-primary-soft: var(--color-green-100);
+:root {
+ 
+  transition: background-color 0.3s ease, color 0.3s ease;
 
-  --color-secondary: var(--color-purple-700);
-  --color-secondary-soft: var(--color-purple-100);
-
-  --color-tertiary: var(--color-slate-500);
-  --color-surface: var(--color-slate-50);
-  --color-surface-strong: var(--color-white);
-
-  --color-text: var(--color-slate-800);
-  --color-text-muted: var(--color-slate-500);
-  --color-border: var(--color-slate-200);
+  --primary: #064e3b;          /* Verde Floresta */
+  --primary-soft: #d1fae5;     /* Verde muito claro para fundos de tags */
+  --secondary: #d97706;        /* Ouro/Âmbar para detalhes e hover */
+  --secondary-soft: #fef3c7;
+  --tertiary: #64748b;         /* Slate para textos secundários */
+  --surface: #f8fafc;          /* Fundo principal (quase branco) */
+  --surface-strong: #e4e4e4;   /* Fundo de inputs e cards */
+  --text: #0f172a;             /* Texto principal (quase preto azulado) */
+  --text-muted: #475569;       /* Texto de apoio */
+  --border: #e2e8f0;           /* Bordas sutis */
 }
 
-@media (prefers-color-scheme: dark) {
-  @theme inline {
-    --color-primary: var(--color-green-500);
-    --color-primary-soft: var(--color-green-900);
+@theme {
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-soft: var(--secondary-soft);
+  --color-tertiary: var(--tertiary);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+}
 
-    --color-secondary: var(--color-purple-500);
-    --color-secondary-soft: var(--color-purple-900);
-
-    --color-tertiary: var(--color-slate-400);
-    --color-surface: var(--color-slate-900);
-    --color-surface-strong: var(--color-slate-800);
-
-    --color-text: var(--color-slate-100);
-    --color-text-muted: var(--color-slate-400);
-    --color-border: var(--color-slate-700);
-  }
+.dark {
+  --primary: var(--color-green-500);
+  --primary-soft: var(--color-green-900);
+  --secondary: var(--color-purple-500);
+  --secondary-soft: var(--color-purple-900);
+  --tertiary: var(--color-slate-400);
+  --surface: var(--color-slate-900);
+  --surface-strong: var(--color-slate-800);
+  --text: var(--color-slate-100);
+  --text-muted: var(--color-slate-400);
+  --border: var(--color-slate-700);
 }

@@ -68,7 +68,7 @@ export default function AgroHeroWithStats() {
 
             <Link
               href="#impacto"
-              className="rounded-full border border-border px-6 py-3 text-sm font-semibold text-text hover:border-primary hover:text-primary transition"
+              className="rounded-full border border-primary px-6 py-3 text-sm font-semibold text-text hover:border-primary hover:text-primary transition"
             >
               Nosso impacto
             </Link>
