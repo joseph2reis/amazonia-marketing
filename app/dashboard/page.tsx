@@ -33,7 +33,7 @@ const stats = [
 
 export default function DashboardPage() {
   return (
-    <section className="min-h-screen bg-surface px-6 py-8">
+    <section className="bg-surface px-6 py-8">
       {/* Header */}
       <header className="mb-10">
         <h1 className="text-3xl font-bold text-text">

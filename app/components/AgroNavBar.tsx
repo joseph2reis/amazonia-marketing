@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { FiSearch, FiX, FiMoon, FiSun } from "react-icons/fi";
+import { useState } from "react";
+import { FiSearch, FiX } from "react-icons/fi";
+import ThemeToggle from "@/app/components/ThemeToggle";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -13,30 +14,6 @@ export default function AgroNavbar() {
   const [search, setSearch] = useState("");
   const [active, setActive] = useState("Home");
   const [darkMode, setDarkMode] = useState(false);
-
-  // Inicializa o tema baseado no localStorage ou preferência do sistema
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const isDark =
-      savedTheme === "dark" ||
-      (!savedTheme &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches);
-
-    setDarkMode(isDark);
-    if (isDark) document.documentElement.classList.add("dark");
-  }, []);
-
-  const toggleTheme = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    if (newMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  };
 
   return (
     <header className="w-full border-b border-border bg-surface transition-colors duration-300">
@@ -89,17 +66,7 @@ export default function AgroNavbar() {
 
         {/* Ações e Toggle de Tema */}
         <div className="flex items-center gap-4">
-          <button
-            onClick={toggleTheme}
-            className="group relative flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-strong text-text transition-all hover:border-primary hover:text-primary"
-            title="Mudar tema"
-          >
-            {darkMode ? (
-              <FiSun className="h-5 w-5 rotate-0 transition-transform duration-500 dark:-rotate-90" />
-            ) : (
-              <FiMoon className="h-5 w-5 rotate-0 transition-transform duration-500" />
-            )}
-          </button>
+          <ThemeToggle />
 
           <div className="h-6 w-[1px] bg-border mx-1" />
 

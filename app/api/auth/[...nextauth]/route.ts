@@ -1,9 +1,12 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import { prisma } from "@/app/Lib/prisma";
+
 
 const handler = NextAuth({
     pages: {
-        signIn: "/auth/login", 
+        signIn: "/auth/login",
     },
     providers: [
         CredentialsProvider({
@@ -13,21 +16,40 @@ const handler = NextAuth({
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                // Aqui você faz a chamada para sua API real ou banco de dados
-                // Exemplo: const res = await fetch("sua-api.com/login", { ... })
-
-                // Simulação de validação:
-                if (credentials?.email === "admin@agro.com" && credentials?.password === "123456") {
-                    return { id: "1", name: "Usuário Agro", email: "admin@agro.com" };
+                if (!credentials?.email || !credentials?.password) {
+                    return null;
                 }
 
-                // Se retornar null, o NextAuth exibe erro de credenciais
-                return null;
+                // 1. Busca o usuário no banco usando o Prisma que acabamos de consertar
+                const user = await prisma.user.findUnique({
+                    where: { email: credentials.email },
+                });
+
+                // 2. Verifica se o usuário existe
+                if (!user) {
+                    return null;
+                }
+
+                // 3. Compara a senha digitada com o hash salvo no banco
+                const isPasswordValid = await bcrypt.compare(
+                    credentials.password,
+                    user.password
+                );
+
+                if (!isPasswordValid) {
+                    return null;
+                }
+
+                // 4. Retorna o objeto usuário para a sessão
+                return {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                };
             },
         }),
     ],
     callbacks: {
-        // Adiciona o ID do usuário ao token da sessão
         async jwt({ token, user }) {
             if (user) token.id = user.id;
             return token;
