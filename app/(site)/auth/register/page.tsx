@@ -106,7 +106,7 @@ export default function RegisterPage() {
                 {...register("name", { required: "Nome é obrigatório" })}
                 type="text"
                 placeholder="Seu nome"
-                className="w-full rounded-xl border border-border bg-white pl-11 pr-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-xl border border-border bg-surface pl-11 pr-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
           </div>
@@ -122,7 +122,7 @@ export default function RegisterPage() {
                 {...register("email", { required: "E-mail é obrigatório" })}
                 type="email"
                 placeholder="seu@email.com"
-                className="w-full rounded-xl border border-border bg-white pl-11 pr-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-xl border text-text border-border bg-surface pl-11 pr-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
           </div>
@@ -141,7 +141,8 @@ export default function RegisterPage() {
                 })}
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
-                className="w-full rounded-xl border border-border bg-white pl-11 pr-12 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full rounded-xl border border-border bg-surface
+                 pl-11 pr-12 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
               <button
                 type="button"

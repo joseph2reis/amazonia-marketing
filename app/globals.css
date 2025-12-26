@@ -29,16 +29,16 @@
 .dark {
   color-scheme: dark;
 
-  --color-primary: oklch(0.72 0.19 145);
-  --color-primary-soft: oklch(0.27 0.07 145);
-  --color-secondary: oklch(0.62 0.18 295);
-  --color-secondary-soft: oklch(0.29 0.08 295);
-  --color-tertiary: oklch(0.79 0.02 260);
-  --color-surface: oklch(0.17 0.02 260);
-  --color-surface-strong: oklch(0.21 0.02 260);
-  --color-text: oklch(0.97 0.01 260);
-  --color-text-muted: oklch(0.79 0.02 260);
-  --color-border: oklch(0.32 0.02 260);
+  --color-primary: #43c251;
+  --color-primary-soft: #0b2f0e;
+  --color-secondary: #906ae5;
+  --color-secondary-soft: #2f214e;
+  --color-tertiary: #b3bbc8;
+  --color-surface: #0a1018;
+  --color-surface-strong: #131922;
+  --color-text: #f1f5fc;
+  --color-text-muted: #b3bbc8;
+  --color-border: #2d333d;
 }
 
 /* ============================= */

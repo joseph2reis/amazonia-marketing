@@ -80,7 +80,7 @@ export default function LoginPage() {
                 placeholder="seu@email.com"
                 className={`w-full rounded-xl border ${
                   errors.email ? "border-red-500" : "border-border"
-                } bg-white pl-11 pr-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary`}
+                } bg-surface pl-11 pr-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary`}
               />
             </div>
             {errors.email && (
@@ -103,7 +103,7 @@ export default function LoginPage() {
                 placeholder="••••••••"
                 className={`w-full rounded-xl border ${
                   errors.password ? "border-red-500" : "border-border"
-                } bg-white pl-11 pr-12 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary`}
+                } bg-surface pl-11 pr-12 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary`}
               />
               <button
                 type="button"
