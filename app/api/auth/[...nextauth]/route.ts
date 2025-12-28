@@ -1,8 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { prisma } from "@/app/Lib/prisma";
-
+import { UserService } from "@/app/services/user.service";
 
 const handler = NextAuth({
     pages: {
@@ -20,10 +19,8 @@ const handler = NextAuth({
                     return null;
                 }
 
-                // 1. Busca o usuário no banco usando o Prisma que acabamos de consertar
-                const user = await prisma.user.findUnique({
-                    where: { email: credentials.email },
-                });
+                // 1. Busca o usuário no banco
+                const user = await UserService.findByEmail(credentials.email)
 
                 // 2. Verifica se o usuário existe
                 if (!user) {

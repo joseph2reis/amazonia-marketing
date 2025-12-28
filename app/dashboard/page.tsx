@@ -7,11 +7,12 @@ import {
   FaDollarSign,
   FaUsers,
 } from "react-icons/fa";
+import { products } from "../database/products";
 
 const stats = [
   {
     title: "Produtos",
-    value: "12",
+    value: products.length,
     icon: FaBoxOpen,
   },
   {
@@ -32,13 +33,12 @@ const stats = [
 ];
 
 export default function DashboardPage() {
+
   return (
     <section className="bg-surface px-6 py-8">
       {/* Header */}
       <header className="mb-10">
-        <h1 className="text-3xl font-bold text-text">
-          Dashboard
-        </h1>
+        <h1 className="text-3xl font-bold text-text">Dashboard</h1>
         <p className="mt-1 text-sm text-text-muted">
           Visão geral da sua loja 🌱
         </p>
@@ -56,9 +56,7 @@ export default function DashboardPage() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-text-muted">
-                    {item.title}
-                  </p>
+                  <p className="text-sm text-text-muted">{item.title}</p>
                   <p className="mt-1 text-2xl font-bold text-text">
                     {item.value}
                   </p>
@@ -75,18 +73,14 @@ export default function DashboardPage() {
 
       {/* Quick actions */}
       <div className="mt-12">
-        <h2 className="mb-4 text-xl font-semibold text-text">
-          Ações rápidas
-        </h2>
+        <h2 className="mb-4 text-xl font-semibold text-text">Ações rápidas</h2>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Link
             href="/dashboard/products"
             className="rounded-2xl border border-border bg-surface-strong p-5 transition hover:border-primary"
           >
-            <h3 className="font-semibold text-text">
-              Gerenciar produtos
-            </h3>
+            <h3 className="font-semibold text-text">Gerenciar produtos</h3>
             <p className="mt-1 text-sm text-text-muted">
               Adicionar, editar ou remover produtos
             </p>
@@ -96,9 +90,7 @@ export default function DashboardPage() {
             href="/dashboard/orders"
             className="rounded-2xl border border-border bg-surface-strong p-5 transition hover:border-primary"
           >
-            <h3 className="font-semibold text-text">
-              Ver pedidos
-            </h3>
+            <h3 className="font-semibold text-text">Ver pedidos</h3>
             <p className="mt-1 text-sm text-text-muted">
               Acompanhe os pedidos realizados
             </p>
@@ -108,9 +100,7 @@ export default function DashboardPage() {
             href="/dashboard/profile"
             className="rounded-2xl border border-border bg-surface-strong p-5 transition hover:border-primary"
           >
-            <h3 className="font-semibold text-text">
-              Perfil
-            </h3>
+            <h3 className="font-semibold text-text">Perfil</h3>
             <p className="mt-1 text-sm text-text-muted">
               Atualize suas informações
             </p>

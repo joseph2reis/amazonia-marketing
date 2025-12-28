@@ -100,7 +100,7 @@ export default function AgroHeroWithStats() {
         </div>
 
         {/* Image */}
-        <div className="relative mx-auto h-110 w-full max-w-md">
+        <div className="hidden md:block relative mx-auto h-110 w-full max-w-md">
           <Image
             src={imageHero}
             alt="Impacto da agricultura sustentável na Amazônia"

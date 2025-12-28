@@ -12,8 +12,7 @@ const navItems = [
 
 export default function AgroNavbar() {
   const [search, setSearch] = useState("");
-  const [active, setActive] = useState("Home");
-  const [darkMode, setDarkMode] = useState(false);
+  const [active, setActive] = useState("Home"); 
 
   return (
     <header className="w-full border-b border-border bg-surface transition-colors duration-300">
@@ -23,7 +22,7 @@ export default function AgroNavbar() {
           <Link href={"/"} className="flex items-center gap-2 group">
             <div className="h-9 w-9 rounded-full bg-primary transition-transform group-hover:scale-110" />
             <span className="text-lg font-bold text-primary tracking-tight">
-              AgroAmazônia
+              AM
             </span>
           </Link>
 
@@ -47,7 +46,7 @@ export default function AgroNavbar() {
         </div>
 
         {/* Navegação Central */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden xl:flex items-center gap-8">
           {navItems.map((item) => (
             <button
               key={item.label}

@@ -1,7 +1,8 @@
 
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { prisma } from "@/app/Lib/prisma";
+import { UserService } from "@/app/services/user.service";
+
 
 export async function POST(req: Request) {
     try {
@@ -15,9 +16,7 @@ export async function POST(req: Request) {
             );
         }
 
-        const userExists = await prisma.user.findUnique({
-            where: { email },
-        });
+        const userExists = await UserService.findByEmail(email);
 
         if (userExists) {
             return NextResponse.json(
@@ -28,13 +27,13 @@ export async function POST(req: Request) {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await prisma.user.create({
-            data: {
+        await UserService.create(
+            {
                 name,
                 email,
                 password: hashedPassword,
-            },
-        });
+            }
+        );
 
         return NextResponse.json(
             { message: "Conta criada com sucesso" },

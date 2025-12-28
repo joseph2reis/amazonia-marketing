@@ -1,4 +1,3 @@
-// app/dashboard/layout.tsx
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Sidebar from "@/app/components/dashboard/Sidebar";

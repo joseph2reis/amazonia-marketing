@@ -37,7 +37,7 @@ export const products: Product[] = [
         name: "Sensor Agrícola",
         description: "Monitoramento inteligente do cultivo",
         price: "R$ 299,90",
-        category: "Sementes & Mudas",
+        category: "tecnologia",
         images: ["/products/sensor.png"],
     },
     {
@@ -46,7 +46,7 @@ export const products: Product[] = [
         name: "Kit Mudas",
         description: "Produção sustentável desde o início",
         price: "R$ 129,90",
-        category: "Sementes & Mudas",
+        category: "Mudas",
         images: ["/products/mudas.png"],
     },
 ];

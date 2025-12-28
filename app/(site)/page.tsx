@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       <AgroHeroWithStats />
-      <AgroCategories />
+      {/* <AgroCategories /> */}
       <AgroProductsCarousel />
     </>
   );
