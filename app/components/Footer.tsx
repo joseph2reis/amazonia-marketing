@@ -103,7 +103,7 @@ export default function AgroFooter() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mb-20 rounded-3xl bg-gradient-to-r from-primary to-secondary p-10 text-white shadow-2xl"
+          className="mb-20 rounded-3xl bg-linear-to-r from-primary to-secondary p-10 text-white shadow-2xl"
         >
           <div className="grid gap-8 md:grid-cols-2 md:items-center">
             <div>

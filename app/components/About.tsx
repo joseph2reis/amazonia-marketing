@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function AboutSection() {
   return (
-    <section className="py-16 md:py-24 bg-surface">
+    <section id="sobre" className="py-16 md:py-24 bg-surface">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         {/* Cabeçalho da seção */}
         <motion.div
@@ -54,7 +54,7 @@ export default function AboutSection() {
               className="object-cover w-full h-95 lg:h-115 transition-transform duration-700 group-hover:scale-105"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 text-white">
               <p className="text-sm font-medium opacity-90">
                 Brasil, safra 2025/26 – Tecnologia e sustentabilidade no campo

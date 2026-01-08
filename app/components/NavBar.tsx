@@ -5,14 +5,14 @@ import { FiSearch, FiX } from "react-icons/fi";
 import ThemeToggle from "@/app/components/ThemeToggle";
 
 const navItems = [
-  { label: "Home", href: "#home" },
+  { label: "Home", href: "/" },
   { label: "Sobre", href: "#sobre" },
   { label: "Contato", href: "#contato" },
 ];
 
 export default function AgroNavbar() {
   const [search, setSearch] = useState("");
-  const [active, setActive] = useState("Home"); 
+  const [active, setActive] = useState("Home");
 
   return (
     <header className="w-full border-b border-border bg-surface transition-colors duration-300">
@@ -48,7 +48,8 @@ export default function AgroNavbar() {
         {/* Navegação Central */}
         <nav className="hidden xl:flex items-center gap-8">
           {navItems.map((item) => (
-            <button
+            <Link
+              href={item.href}
               key={item.label}
               onClick={() => setActive(item.label)}
               className={`relative text-sm font-medium transition-colors hover:text-primary ${
@@ -59,7 +60,7 @@ export default function AgroNavbar() {
               {active === item.label && (
                 <span className="absolute -bottom-2 left-0 h-0.5 w-full rounded-full bg-secondary animate-in fade-in zoom-in duration-300" />
               )}
-            </button>
+            </Link>
           ))}
         </nav>
 
