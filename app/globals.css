@@ -16,6 +16,7 @@
   --color-border: #d3d3d3;
 }
 
+
 /* ============================= */
 /* Base do documento */
 /* ============================= */
@@ -44,6 +45,12 @@
 /* ============================= */
 /* Aplicação real */
 /* ============================= */
+
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--color-surface);
   color: var(--color-text);

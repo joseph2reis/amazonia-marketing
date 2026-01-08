@@ -1,5 +1,5 @@
-import AgroNavbar from "../components/AgroNavBar";
-import AgroFooter from "../components/AgroFooter";
+import AgroNavbar from "../components/NavBar";
+import AgroFooter from "../components/Footer";
 
 export default function SiteLayout({
   children,

@@ -1,0 +1,6 @@
+DATABASE_URL="file:./dev.db"
+
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=um_codigo_muito_seguro_e_longo_aqui
+
+CLOUDINARY_URL=cloudinary://992278934673826:84WwKMsGeu_vh9LmenwQO9tdMwo@dhcwivqv2

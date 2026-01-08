@@ -67,7 +67,7 @@ export default function AgroNavbar() {
         <div className="flex items-center gap-4">
           <ThemeToggle />
 
-          <div className="h-6 w-[1px] bg-border mx-1" />
+          <div className="h-6 w-px bg-border mx-1" />
 
           <Link
             href="/auth/login"
