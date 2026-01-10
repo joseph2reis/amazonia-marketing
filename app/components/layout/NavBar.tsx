@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { FiSearch, FiX } from "react-icons/fi";
-import ThemeToggle from "@/app/components/ThemeToggle";
+import ThemeToggle from "@/app/components/ui/ThemeToggle";
 
 const navItems = [
   { label: "Home", href: "/" },

@@ -1,4 +1,4 @@
-import { ProductService } from "@/app/services/product.service";
+import { ProductService } from "@/app/services/ProductService";
 import { NextResponse } from "next/server";
 
 

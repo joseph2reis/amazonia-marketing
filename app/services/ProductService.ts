@@ -10,10 +10,13 @@ export interface CreateProductDTO {
     images: string[];
 }
 
+
 export interface UpdateProductDTO extends Partial<CreateProductDTO> { }
 
 export class ProductService {
-    static async create(data: CreateProductDTO) {
+
+    static async create(data: CreateProductDTO, userId: string) {
+
         return prisma.product.create({
             data: {
                 slug: data.slug,
@@ -21,13 +24,23 @@ export class ProductService {
                 description: data.description,
                 price: data.price,
                 category: data.category,
+                status: "PENDING",
+
+                user: {
+                    connect: { id: userId },
+                },
+
                 images: {
-                    create: data.images.map((url) => ({ url })),
+                    create: data.images.map(url => ({ url })),
                 },
             },
-            include: { images: true },
+            include: {
+                images: true,
+            },
         });
     }
+
+
 
     static async findAll() {
         return prisma.product.findMany({

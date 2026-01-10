@@ -7,26 +7,42 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String   @unique
+  id        String    @id @default(cuid())
+  email     String    @unique
   password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+  company   Company?
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ProductStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 model Product {
-  id          Int    @id @default(autoincrement())
-  slug        String @unique
+  id          Int           @id @default(autoincrement())
+  slug        String        @unique
   name        String
   description String
   price       Float
   category    String
+  status      ProductStatus @default(PENDING)
 
-  images ProductImage[]
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  images    ProductImage[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 }
 
 model ProductImage {
@@ -35,4 +51,26 @@ model ProductImage {
 
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Company {
+  id          String   @id @default(cuid())
+  name        String
+  cnpj        String   @unique
+  cpf         String   @unique
+  phone       String
+  description String
+  approved    Boolean  @default(false)
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

@@ -1,12 +1,11 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { UserService } from "@/app/services/user.service";
+import { UserService } from "@/app/services/UserService";
 
-const handler = NextAuth({
-    pages: {
-        signIn: "/auth/login",
-    },
+export const authOptions = {
+    pages: { signIn: "/auth/login" },
+
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -15,48 +14,49 @@ const handler = NextAuth({
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
-                    return null;
-                }
+                if (!credentials?.email || !credentials?.password) return null;
 
-                // 1. Busca o usuário no banco
-                const user = await UserService.findByEmail(credentials.email)
+                const user = await UserService.findByEmail(credentials.email);
+                if (!user) return null;
 
-                // 2. Verifica se o usuário existe
-                if (!user) {
-                    return null;
-                }
+                console.log("USER DB:", user)
 
-                // 3. Compara a senha digitada com o hash salvo no banco
-                const isPasswordValid = await bcrypt.compare(
-                    credentials.password,
-                    user.password
-                );
+                const valid = await bcrypt.compare(credentials.password, user.password);
+                if (!valid) return null;
 
-                if (!isPasswordValid) {
-                    return null;
-                }
-
-                // 4. Retorna o objeto usuário para a sessão
                 return {
                     id: user.id,
-                    name: user.name,
                     email: user.email,
+                    role: user.role ?? "USER",
                 };
             },
-        }),
+        })
     ],
+
     callbacks: {
-        async jwt({ token, user }) {
-            if (user) token.id = user.id;
+        async jwt({ token, user }: { token: any; user?: any }) {
+            if (user) {
+                token.id = user.id;
+                token.role = user.role;
+            }
+
+            console.log("TOKEN:", token)
             return token;
         },
-        async session({ session, token }) {
-            if (session.user) (session.user as any).id = token.id;
+
+        async session({ session, token }: { session: any; token: any }) {
+            if (session.user) {
+                session.user.id = token.id;
+                session.user.role = token.role;
+                console.log("SESSION:", session)
+            }
             return session;
         },
     },
+
     secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

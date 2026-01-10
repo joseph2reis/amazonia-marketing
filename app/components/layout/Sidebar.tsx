@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -15,7 +14,15 @@ import {
 } from "react-icons/hi";
 import { useTheme } from "next-themes";
 
-export default function Sidebar({ user }: { user: any }) {
+interface SidebarProps {
+  user: {
+    email: string;
+    role: string;
+    id?: string;
+  };
+}
+
+export default function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -26,6 +33,7 @@ export default function Sidebar({ user }: { user: any }) {
     { name: "Início", href: "/dashboard", icon: HiOutlineHome },
     { name: "Relatórios", href: "/dashboard/reports", icon: HiOutlineChartBar },
     { name: "Equipe", href: "/dashboard/team", icon: HiOutlineUserGroup },
+    ...(user?.role === "ADMIN" ? [{ name: "Empresas", href: "/dashboard/companies", icon: HiOutlineUserGroup }] : []),
   ];
 
   useEffect(() => {
@@ -60,9 +68,7 @@ export default function Sidebar({ user }: { user: any }) {
         {/* Logo + Toggle */}
         <div className="p-4 flex items-center justify-between">
           {!collapsed && (
-            <span className="font-bold text-lg text-primary">
-              AgroAmazônia
-            </span>
+            <span className="font-bold text-lg text-primary">AgroAmazônia</span>
           )}
 
           <button
@@ -109,13 +115,13 @@ export default function Sidebar({ user }: { user: any }) {
         <div className="p-3 border-t border-border space-y-2">
           <div className="flex items-center gap-3 p-2">
             <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold">
-              {user?.name?.[0]?.toUpperCase() || "U"}
+              {user?.email?.[0]?.toUpperCase() || "U"}
             </div>
 
             {!collapsed && (
               <div className="overflow-hidden">
                 <p className="text-sm font-semibold text-text truncate">
-                  {user?.name}
+                  {user?.email.split("@")[0]}
                 </p>
                 <p className="text-xs text-text-muted truncate">
                   {user?.email}

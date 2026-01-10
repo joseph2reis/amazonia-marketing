@@ -1,19 +1,17 @@
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { NextResponse } from "next/server";
 
-type Handler = (req: Request, ctx?: any) => Promise<Response>;
+type Handler = (req: Request, user: any, ctx?: any) => Promise<Response>;
 
 export function withAuth(handler: Handler) {
     return async (req: Request, ctx?: any) => {
-        const session = await getServerSession();
+        const session = await getServerSession(authOptions);
 
-        if (!session) {
-            return NextResponse.json(
-                { error: "Não autorizado" },
-                { status: 401 }
-            );
+        if (!session || !session.user) {
+            return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
         }
 
-        return handler(req, ctx);
+        return handler(req, session.user, ctx);
     };
 }

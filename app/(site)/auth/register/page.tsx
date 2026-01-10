@@ -3,36 +3,50 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
+
 import {
   HiOutlineMail,
   HiOutlineLockClosed,
-  HiOutlineUser,
   HiOutlineEye,
   HiOutlineEyeOff,
 } from "react-icons/hi";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import TermsModal from "@/app/components/ui/TermsModal";
+import PrivacyModal from "@/app/components/ui/PrivacyModal";
 
 type RegisterFormData = {
-  name: string;
   email: string;
   password: string;
+  confirmPassword: string;
+  acceptTerms: boolean;
 };
 
 export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [msg, setMsg] = useState<{ type: "error" | "success" | ""; text: string }>({
+  const [msg, setMsg] = useState<{
+    type: "error" | "success" | "";
+    text: string;
+  }>({
     type: "",
     text: "",
   });
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
 
   const router = useRouter();
+  const { update } = useSession();
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<RegisterFormData>();
+
+  const password = watch("password");
 
   const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true);
@@ -56,11 +70,32 @@ export default function RegisterPage() {
 
       setMsg({
         type: "success",
-        text: "Conta criada com sucesso! Redirecionando...",
+        text: "Conta criada com sucesso! Fazendo login...",
       });
 
+      // Fazer login automático
+      const signInResult = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (signInResult?.error) {
+        setMsg({
+          type: "error",
+          text: "Conta criada, mas erro no login automático. Faça login manualmente.",
+        });
+        setTimeout(() => {
+          router.push("/auth/login");
+        }, 2000);
+        return;
+      }
+
+      // Atualizar a sessão
+      await update();
+
       setTimeout(() => {
-        router.push("/auth/login");
+        router.push("/complete-company");
       }, 1500);
     } catch {
       setMsg({
@@ -95,22 +130,6 @@ export default function RegisterPage() {
         )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* Nome */}
-          <div>
-            <label className="mb-1 block text-sm font-medium text-text">
-              Nome
-            </label>
-            <div className="relative">
-              <HiOutlineUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 size-5" />
-              <input
-                {...register("name", { required: "Nome é obrigatório" })}
-                type="text"
-                placeholder="Seu nome"
-                className="w-full rounded-xl border border-border bg-surface pl-11 pr-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              />
-            </div>
-          </div>
-
           {/* E-mail */}
           <div>
             <label className="mb-1 block text-sm font-medium text-text">
@@ -163,6 +182,80 @@ export default function RegisterPage() {
             )}
           </div>
 
+          {/* Repetir Senha */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-text">
+              Repetir Senha
+            </label>
+            <div className="relative">
+              <HiOutlineLockClosed className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 size-5" />
+              <input
+                {...register("confirmPassword", {
+                  required: "Confirmação obrigatória",
+                  validate: (value) =>
+                    value === password || "As senhas não coincidem",
+                })}
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                className="w-full rounded-xl border border-border bg-surface
+       pl-11 pr-12 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+              >
+                {showPassword ? (
+                  <HiOutlineEyeOff size={20} />
+                ) : (
+                  <HiOutlineEye size={20} />
+                )}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <p className="mt-1 text-xs text-red-500">
+                {errors.confirmPassword.message}
+              </p>
+            )}
+          </div>
+
+          {/* Aceitar Termos */}
+          <div>
+            <div className="flex items-start gap-3">
+              <input
+                {...register("acceptTerms", {
+                  required: "Você deve aceitar os termos para continuar",
+                })}
+                type="checkbox"
+                id="acceptTerms"
+                className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary focus:ring-1"
+              />
+              <label htmlFor="acceptTerms" className="text-sm text-text-muted">
+                Li e aceito os{" "}
+                <button
+                  type="button"
+                  onClick={() => setIsTermsModalOpen(true)}
+                  className="text-primary hover:underline font-medium bg-transparent border-none p-0 cursor-pointer"
+                >
+                  Termos de Uso
+                </button>{" "}
+                e a{" "}
+                <button
+                  type="button"
+                  onClick={() => setIsPrivacyModalOpen(true)}
+                  className="text-primary hover:underline font-medium bg-transparent border-none p-0 cursor-pointer"
+                >
+                  Política de Privacidade
+                </button>
+              </label>
+            </div>
+            {errors.acceptTerms && (
+              <p className="mt-1 text-xs text-red-500">
+                {errors.acceptTerms.message}
+              </p>
+            )}
+          </div>
+
           <button
             type="submit"
             disabled={isLoading}
@@ -186,6 +279,16 @@ export default function RegisterPage() {
           </Link>
         </p>
       </div>
+
+      {/* Modais */}
+      <TermsModal
+        isOpen={isTermsModalOpen}
+        onClose={() => setIsTermsModalOpen(false)}
+      />
+      <PrivacyModal
+        isOpen={isPrivacyModalOpen}
+        onClose={() => setIsPrivacyModalOpen(false)}
+      />
     </section>
   );
 }

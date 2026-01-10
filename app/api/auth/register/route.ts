@@ -1,13 +1,13 @@
 
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { UserService } from "@/app/services/user.service";
+import { UserService } from "@/app/services/UserService";
 
 
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { name, email, password } = body;
+        const { email, password, role } = body;
 
         if (!email || !password) {
             return NextResponse.json(
@@ -29,9 +29,9 @@ export async function POST(req: Request) {
 
         await UserService.create(
             {
-                name,
                 email,
                 password: hashedPassword,
+                role: "USER"
             }
         );
 

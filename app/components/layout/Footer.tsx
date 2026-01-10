@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
@@ -32,6 +33,7 @@ function AnimatedNumber({
 }
 
 export default function AgroFooter() {
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
 
   function handleSubscribe(e: React.FormEvent) {
@@ -239,13 +241,13 @@ export default function AgroFooter() {
 
             <div className="flex items-center gap-6 text-xs">
               <a
-                href="#"
+                href={`/terms?from=${encodeURIComponent(pathname)}`}
                 className="text-text-muted hover:text-primary transition"
               >
                 Termos de Uso
               </a>
               <a
-                href="#"
+                href={`/privacy?from=${encodeURIComponent(pathname)}`}
                 className="text-text-muted hover:text-primary transition"
               >
                 Política de Privacidade

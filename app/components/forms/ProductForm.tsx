@@ -245,7 +245,7 @@ export default function ProductForm({
               <div
                 key={url}
                 onClick={() => setMainImage(url)}
-                className={`relative w-28 sm:w-32 flex-shrink-0 rounded-lg border p-3 cursor-pointer ${
+                className={`relative w-28 sm:w-32 shrink-0 rounded-lg border p-3 cursor-pointer ${
                   mainImage === url ? "ring-2 ring-primary" : ""
                 }`}
               >

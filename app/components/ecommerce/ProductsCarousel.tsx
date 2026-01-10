@@ -10,7 +10,7 @@ import "swiper/css/pagination";
 
 import { motion } from "framer-motion";
 import AgroCard from "./Card";
-import { products } from "../database/products";
+import { products } from "../../database/products";
 
 const swiperConfig: SwiperOptions = {
   modules: [Navigation, Pagination],

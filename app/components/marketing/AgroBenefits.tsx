@@ -1,7 +1,7 @@
 "use client";
 
 import AgroBenefitCard from "./AgroBenefitCard";
-import { benefits } from "../database/benefits";
+import { benefits } from "../../database/benefits";
 import { motion } from "framer-motion";
 
 export default function AgroBenefits() {

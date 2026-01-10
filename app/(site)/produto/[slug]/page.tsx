@@ -1,5 +1,5 @@
 import { products } from "@/app/database/products";
-import AgroProductDetails from "@/app/components/ProductDetails";
+import AgroProductDetails from "@/app/components/ecommerce/ProductDetails";
 
 type Props = {
   params: Promise<{
