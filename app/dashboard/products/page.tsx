@@ -4,8 +4,14 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { HiPlus, HiPencil, HiTrash } from "react-icons/hi";
-import { AiOutlineLoading3Quarters, AiOutlineEye, AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
+import {
+  AiOutlineLoading3Quarters,
+  AiOutlineEye,
+  AiOutlineCheck,
+  AiOutlineClose,
+} from "react-icons/ai";
 import ProductForm from "@/app/components/forms/ProductForm";
+import Link from "next/link";
 
 interface Product {
   id: number;
@@ -30,7 +36,9 @@ export default function ProductsPage() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<"ALL" | "PENDING" | "APPROVED" | "REJECTED">("ALL");
+  const [filter, setFilter] = useState<
+    "ALL" | "PENDING" | "APPROVED" | "REJECTED"
+  >("ALL");
   const [companyApproved, setCompanyApproved] = useState(false);
 
   const isAdmin = session?.user?.role === "ADMIN";
@@ -53,11 +61,14 @@ export default function ProductsPage() {
   }
 
   async function fetchProducts() {
+    if (products.length === 0) setLoading(true);
     setLoading(true);
     const params = new URLSearchParams();
     if (isAdmin && filter !== "ALL") params.append("status", filter);
 
-    const endpoint = isAdmin ? `/api/admin/products?${params}` : "/api/products";
+    const endpoint = isAdmin
+      ? `/api/admin/products?${params}`
+      : "/api/products";
     try {
       const res = await fetch(endpoint);
       const data = await res.json();
@@ -82,7 +93,10 @@ export default function ProductsPage() {
     fetchProducts();
   }
 
-  const updateProductStatus = async (id: number, status: "APPROVED" | "REJECTED") => {
+  const updateProductStatus = async (
+    id: number,
+    status: "APPROVED" | "REJECTED",
+  ) => {
     try {
       const res = await fetch(`/api/admin/products/${id}/status`, {
         method: "PATCH",
@@ -90,9 +104,7 @@ export default function ProductsPage() {
         body: JSON.stringify({ status }),
       });
       if (res.ok) {
-        setProducts(products.map(p =>
-          p.id === id ? { ...p, status } : p
-        ));
+        setProducts(products.map((p) => (p.id === id ? { ...p, status } : p)));
       }
     } catch (error) {
       console.error("Erro ao atualizar produto:", error);
@@ -101,9 +113,12 @@ export default function ProductsPage() {
 
   const getStatusColor = (status?: string) => {
     switch (status) {
-      case "APPROVED": return "text-green-600 bg-green-50";
-      case "REJECTED": return "text-red-600 bg-red-50";
-      default: return "text-yellow-600 bg-yellow-50";
+      case "APPROVED":
+        return "text-green-600 bg-green-50";
+      case "REJECTED":
+        return "text-red-600 bg-red-50";
+      default:
+        return "text-yellow-600 bg-yellow-50";
     }
   };
 
@@ -148,9 +163,13 @@ export default function ProductsPage() {
                     : "bg-surface text-text hover:bg-surface-strong"
                 }`}
               >
-                {status === "ALL" ? "Todos" :
-                 status === "PENDING" ? "Pendentes" :
-                 status === "APPROVED" ? "Aprovados" : "Rejeitados"}
+                {status === "ALL"
+                  ? "Todos"
+                  : status === "PENDING"
+                    ? "Pendentes"
+                    : status === "APPROVED"
+                      ? "Aprovados"
+                      : "Rejeitados"}
               </button>
             ))}
           </div>
@@ -182,10 +201,14 @@ export default function ProductsPage() {
 
             <div>
               <h2 className="text-lg font-semibold">
-                {isAdmin ? "Nenhum produto encontrado" : "Nenhum produto cadastrado"}
+                {isAdmin
+                  ? "Nenhum produto encontrado"
+                  : "Nenhum produto cadastrado"}
               </h2>
               <p className="text-sm text-text-muted">
-                {isAdmin ? "Não há produtos com este filtro" : "Comece criando seu primeiro produto no sistema."}
+                {isAdmin
+                  ? "Não há produtos com este filtro"
+                  : "Comece criando seu primeiro produto no sistema."}
               </p>
             </div>
 
@@ -238,9 +261,14 @@ export default function ProductsPage() {
                   <td className="px-4 py-3">R$ {product.price.toFixed(2)}</td>
                   {isAdmin && (
                     <td className="px-4 py-3">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(product.status)}`}>
-                        {product.status === "PENDING" ? "Pendente" :
-                         product.status === "APPROVED" ? "Aprovado" : "Rejeitado"}
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(product.status)}`}
+                      >
+                        {product.status === "PENDING"
+                          ? "Pendente"
+                          : product.status === "APPROVED"
+                            ? "Aprovado"
+                            : "Rejeitado"}
                       </span>
                     </td>
                   )}
@@ -256,14 +284,18 @@ export default function ProductsPage() {
                           {product.status === "PENDING" && (
                             <>
                               <button
-                                onClick={() => updateProductStatus(product.id, "APPROVED")}
+                                onClick={() =>
+                                  updateProductStatus(product.id, "APPROVED")
+                                }
                                 className="rounded-lg border p-2 text-green-600 hover:bg-green-50"
                                 title="Aprovar"
                               >
                                 <AiOutlineCheck />
                               </button>
                               <button
-                                onClick={() => updateProductStatus(product.id, "REJECTED")}
+                                onClick={() =>
+                                  updateProductStatus(product.id, "REJECTED")
+                                }
                                 className="rounded-lg border p-2 text-red-600 hover:bg-red-50"
                                 title="Rejeitar"
                               >
@@ -271,9 +303,13 @@ export default function ProductsPage() {
                               </button>
                             </>
                           )}
-                          <button className="rounded-lg border p-2 text-blue-600 hover:bg-blue-50" title="Ver detalhes">
+                          <Link
+                            href={`/dashboard/products/${product.id}`}
+                            className="rounded-lg border p-2 text-blue-600 hover:bg-blue-50"
+                            title="Ver detalhes"
+                          >
                             <AiOutlineEye />
-                          </button>
+                          </Link>
                         </>
                       ) : (
                         <>

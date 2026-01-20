@@ -8,7 +8,7 @@ async function main() {
     where: { email: 'admin@agronomia.com' },
     update: {},
     create: {
-      email: 'admin@agronomia.com',
+      email: 'admin@email.com',
       password: hashedPassword,
       role: 'ADMIN',
     },

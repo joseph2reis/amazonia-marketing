@@ -37,11 +37,11 @@ model Product {
   category    String
   status      ProductStatus @default(PENDING)
 
-  user        User          @relation(fields: [userId], references: [id])
-  userId      String
-  
-  company     Company?      @relation(fields: [companyId], references: [id])
-  companyId   String?
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
 
   images    ProductImage[]
   createdAt DateTime       @default(now())
@@ -65,16 +65,16 @@ model Admin {
 }
 
 model Company {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String
-  cnpj        String   @unique
-  cpf         String   @unique
+  cnpj        String    @unique
+  cpf         String    @unique
   phone       String
   description String
-  approved    Boolean  @default(false)
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id])
+  approved    Boolean   @default(false)
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id])
   products    Product[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }

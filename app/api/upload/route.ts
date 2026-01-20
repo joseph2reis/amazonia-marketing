@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
         // 1. Validação de Tamanho
         if (file.size > MAX_FILE_SIZE) {
-            return NextResponse.json({ error: "O arquivo deve ter no máximo 5MB" }, { status: 400 });
+            return NextResponse.json({ error: "O arquivo deve ter no máximo 1MB" }, { status: 400 });
         }
 
         // 2. Validação de Formato
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
                     folder: "products",
                     transformation: [
                         {
-                            width: 800,
+                            width: 600,
                             height: 800,
                             crop: "fill",
                             gravity: "center",
