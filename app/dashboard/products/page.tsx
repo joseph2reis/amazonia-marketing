@@ -31,8 +31,26 @@ export default function ProductsPage() {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"ALL" | "PENDING" | "APPROVED" | "REJECTED">("ALL");
+  const [companyApproved, setCompanyApproved] = useState(false);
 
   const isAdmin = session?.user?.role === "ADMIN";
+
+  useEffect(() => {
+    if (!isAdmin && session) {
+      checkCompanyStatus();
+    }
+  }, [session, isAdmin]);
+
+  async function checkCompanyStatus() {
+    try {
+      const res = await fetch("/api/company/check");
+      const data = await res.json();
+      setCompanyApproved(data.approved ?? false);
+    } catch (error) {
+      console.error("Erro ao verificar empresa:", error);
+      setCompanyApproved(false);
+    }
+  }
 
   async function fetchProducts() {
     setLoading(true);
@@ -40,9 +58,14 @@ export default function ProductsPage() {
     if (isAdmin && filter !== "ALL") params.append("status", filter);
 
     const endpoint = isAdmin ? `/api/admin/products?${params}` : "/api/products";
-    const res = await fetch(endpoint);
-    const data = await res.json();
-    setProducts(data);
+    try {
+      const res = await fetch(endpoint);
+      const data = await res.json();
+      setProducts(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Erro ao carregar produtos:", error);
+      setProducts([]);
+    }
     setLoading(false);
   }
 
@@ -98,15 +121,15 @@ export default function ProductsPage() {
         <h1 className="text-2xl font-semibold">
           {isAdmin ? "Gerenciar Produtos" : "Meus Produtos"}
         </h1>
-        {!isAdmin && (
+        {!isAdmin && companyApproved && (
           <button
             onClick={() => {
               setEditingProduct(null);
               setShowForm(true);
             }}
-            className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-white"
+            className="flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white font-medium transition-colors"
           >
-            <HiPlus />
+            <HiPlus className="text-lg" />
             Novo produto
           </button>
         )}

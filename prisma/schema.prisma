@@ -37,8 +37,11 @@ model Product {
   category    String
   status      ProductStatus @default(PENDING)
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  user        User          @relation(fields: [userId], references: [id])
+  userId      String
+  
+  company     Company?      @relation(fields: [companyId], references: [id])
+  companyId   String?
 
   images    ProductImage[]
   createdAt DateTime       @default(now())
@@ -71,6 +74,7 @@ model Company {
   approved    Boolean  @default(false)
   userId      String   @unique
   user        User     @relation(fields: [userId], references: [id])
+  products    Product[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

@@ -228,6 +228,26 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
+
+      {session?.user?.role !== "ADMIN" && (
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold text-text mb-4">Atalhos Rapidos</h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Link
+              href="/dashboard/products"
+              className="bg-surface-strong p-6 rounded-xl border border-border hover:shadow-md transition-shadow block"
+            >
+              <div className="flex items-center">
+                <FaBoxOpen className="text-2xl text-blue-500 mr-3" />
+                <div>
+                  <h3 className="font-medium text-text">Meus Produtos</h3>
+                  <p className="text-sm text-text-muted">Visualize e gerencie seus produtos</p>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

@@ -16,6 +16,14 @@ export interface UpdateProductDTO extends Partial<CreateProductDTO> { }
 export class ProductService {
 
     static async create(data: CreateProductDTO, userId: string) {
+        // Validar se a empresa do usuário está aprovada
+        const company = await prisma.company.findUnique({
+            where: { userId },
+        });
+
+        if (!company || !company.approved) {
+            throw new Error("Sua empresa não está aprovada para cadastrar produtos");
+        }
 
         return prisma.product.create({
             data: {
@@ -30,12 +38,17 @@ export class ProductService {
                     connect: { id: userId },
                 },
 
+                company: {
+                    connect: { id: company.id },
+                },
+
                 images: {
                     create: data.images.map(url => ({ url })),
                 },
             },
             include: {
                 images: true,
+                company: true,
             },
         });
     }
@@ -44,7 +57,7 @@ export class ProductService {
 
     static async findAll() {
         return prisma.product.findMany({
-            include: { images: true },
+            include: { images: true, company: true },
             orderBy: { createdAt: "desc" },
         });
     }
@@ -52,14 +65,14 @@ export class ProductService {
     static async findById(id: number) {
         return prisma.product.findUnique({
             where: { id },
-            include: { images: true },
+            include: { images: true, company: true },
         });
     }
 
     static async findBySlug(slug: string) {
         return prisma.product.findUnique({
             where: { slug },
-            include: { images: true },
+            include: { images: true, company: true },
         });
     }
 
@@ -75,7 +88,7 @@ export class ProductService {
                     }
                     : undefined,
             },
-            include: { images: true },
+            include: { images: true, company: true },
         });
     }
 

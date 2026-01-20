@@ -64,4 +64,12 @@ export class CompanyService {
             data: { approved: true },
         });
     }
+
+    static async isApproved(userId: string): Promise<boolean> {
+        const company = await prisma.company.findUnique({
+            where: { userId },
+            select: { approved: true },
+        });
+        return company?.approved ?? false;
+    }
 }
