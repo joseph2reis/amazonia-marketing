@@ -60,7 +60,7 @@ export default function AgroBenefitCard({
 
       <h3 className="relative text-lg font-semibold text-text">{title}</h3>
 
-      <p className="relative mt-2 text-sm text-text-muted leading-relaxed">
+      <p className="relative mt-2 text-sm text-text-muted leading-relaxed text-center">
         {description}
       </p>
     </div>

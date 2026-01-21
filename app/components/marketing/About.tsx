@@ -35,16 +35,28 @@ export default function AboutSection() {
             mais produtivo, sustentável e rentável no Brasil.
           </motion.p>
         </motion.div>
+        {/* --- Titulo Quem Somos --- */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.8}}
+          className="mt-10 flex justify-center"
+        >
+          <h3 className="text-3xl font-bold text-text border-primary pb-2">
+            Quem <span className="text-primary">somos</span>
+          </h3>
+        </motion.div>
 
         {/* Conteúdo principal */}
-        <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+        <div className="mt-4 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 items-center">
           {/* Imagem principal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="relative rounded-2xl overflow-hidden border border-border shadow-lg group"
+            className=" mb-10 relative rounded-2xl overflow-hidden border border-border shadow-lg group"
           >
             <Image
               src="/about/image.png"
@@ -87,8 +99,7 @@ export default function AboutSection() {
               }}
               transition={{ duration: 0.7 }}
             >
-              <h3 className="text-2xl font-semibold text-text">Quem somos</h3>
-              <p className="mt-4 text-text-muted leading-relaxed">
+              <p className="mt-4 text-text-muted leading-relaxed text-justify">
                 Somos uma plataforma dedicada a produtores, cooperativas,
                 agrônomos e empresas do agronegócio brasileiro. Nosso objetivo é
                 democratizar o acesso a informações técnicas atualizadas,
@@ -118,7 +129,7 @@ export default function AboutSection() {
                 transition={{ duration: 0.6 }}
                 className="rounded-xl border border-border bg-surface-strong p-6 transition hover:border-primary/50 hover:shadow-md"
               >
-                <div className="text-primary text-3xl mb-3">+35%</div>
+                <div className="text-primary text-3xl mb-3 font-bold">+35%</div>
                 <h4 className="font-semibold text-text">
                   Aumento médio de produtividade
                 </h4>
@@ -136,7 +147,7 @@ export default function AboutSection() {
                 transition={{ duration: 0.6 }}
                 className="rounded-xl border border-border bg-surface-strong p-6 transition hover:border-primary/50 hover:shadow-md"
               >
-                <div className="text-primary text-3xl mb-3">2026</div>
+                <div className="text-primary text-3xl mb-3 font-bold">2026</div>
                 <h4 className="font-semibold text-text">
                   Conteúdo sempre atualizado
                 </h4>
@@ -153,7 +164,7 @@ export default function AboutSection() {
                 visible: { opacity: 1, y: 0 },
               }}
               transition={{ duration: 0.7 }}
-              className="text-text-muted leading-relaxed"
+              className="text-text-muted leading-relaxed text-justify"
             >
               Acreditamos que o futuro do agro brasileiro passa por{" "}
               <span className="font-medium text-primary">
@@ -170,7 +181,7 @@ export default function AboutSection() {
                 visible: { opacity: 1, y: 0 },
               }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="pt-4"
+              className="pt-4 flex justify-center"
             >
               <a
                 href="/contato"
