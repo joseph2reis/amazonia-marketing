@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 // Reutilizando o AnimatedNumber do Hero
 function AnimatedNumber({
@@ -47,55 +48,62 @@ export default function AgroFooter() {
   }
 
   return (
-    <footer className="bg-surface-strong border-t border-border">
-      {/* Pré-footer com Stats Animados */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="bg-primary/5 py-16"
-      >
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              <p className="text-4xl font-bold text-primary">
-                <AnimatedNumber value={1200} />+
-              </p>
-              <p className="mt-2 text-text-muted">Produtores parceiros</p>
-            </motion.div>
+    <footer id="contato" className="bg-surface-strong border-t border-border">
+      
+      {/* Essa verificação esconde os números APENAS se estiver na página de login.
+          Se quiser esconder no registro também, mude para:
+          {!pathname?.startsWith("/auth") && ( 
+      */}
+      {!pathname?.startsWith("/auth") && (
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="bg-primary/5 py-16"
+        >
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <p className="text-4xl font-bold text-primary">
+                  <AnimatedNumber value={1200} />+
+                </p>
+                <p className="mt-2 text-text-muted">Produtores parceiros</p>
+              </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-            >
-              <p className="text-4xl font-bold text-secondary">
-                <AnimatedNumber value={85000} /> ha
-              </p>
-              <p className="mt-2 text-text-muted">Área preservada</p>
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+              >
+                <p className="text-4xl font-bold text-secondary">
+                  <AnimatedNumber value={85000} /> ha
+                </p>
+                <p className="mt-2 text-text-muted">Área preservada</p>
+              </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6 }}
-            >
-              <p className="text-4xl font-bold text-primary">
-                <AnimatedNumber value={320} />
-              </p>
-              <p className="mt-2 text-text-muted">Comunidades atendidas</p>
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6 }}
+              >
+                <p className="text-4xl font-bold text-primary">
+                  <AnimatedNumber value={320} />
+                </p>
+                <p className="mt-2 text-text-muted">Comunidades atendidas</p>
+              </motion.div>
+            </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      )}
+      {/* --- FIM DA MUDANÇA --- */}
 
       {/* Footer Principal */}
       <div className="mx-auto max-w-7xl px-6 py-20">
@@ -160,8 +168,14 @@ export default function AgroFooter() {
           {/* Brand */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-primary" />
-              <span className="text-xl font-bold text-text">AgroAmazônia</span>
+              <Image
+                src="/logo_icon.png"  // Certifique-se que o nome do arquivo está igual na pasta public
+                alt="Logo AgroAmazônia"
+                width={40}       // 40px é equivalente ao h-10 do Tailwind
+                height={40}
+                className="h-15 w-auto object-contain" // Garante que a logo não distorça
+              />
+              <span className="text-xl font-bold text-text">Agro<span className="text-primary">Amazônia</span></span>
             </div>
             <p className="text-sm text-text-muted leading-relaxed">
               Conectando inovação, sustentabilidade e agricultura responsável no

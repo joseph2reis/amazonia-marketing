@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { FiSearch, FiX } from "react-icons/fi";
 import ThemeToggle from "@/app/components/ui/ThemeToggle";
+import Image from "next/image";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -20,10 +21,14 @@ export default function AgroNavbar() {
         {/* Logo + Pesquisa */}
         <div className="flex items-center gap-6">
           <Link href={"/"} className="flex items-center gap-2 group">
-            <div className="h-9 w-9 rounded-full bg-primary transition-transform group-hover:scale-110" />
-            <span className="text-lg font-bold text-primary tracking-tight">
-              AM
-            </span>
+            <Image
+              src="/logo_icon.png"  // Certifique-se que o nome do arquivo está igual na pasta public
+              alt="Logo AgroAmazônia"
+              width={40}       // 40px é equivalente ao h-10 do Tailwind
+              height={40}
+              className="h-15 w-auto object-contain" // Garante que a logo não distorça
+            />
+            <span className="text-xl font-bold text-text">Agro<span className="text-primary">Amazônia</span></span>
           </Link>
 
           <div className="relative hidden md:block">
@@ -52,9 +57,8 @@ export default function AgroNavbar() {
               href={item.href}
               key={item.label}
               onClick={() => setActive(item.label)}
-              className={`relative text-sm font-medium transition-colors hover:text-primary ${
-                active === item.label ? "text-primary" : "text-text"
-              }`}
+              className={`relative text-sm font-medium transition-colors hover:text-primary ${active === item.label ? "text-primary" : "text-text"
+                }`}
             >
               {item.label}
               {active === item.label && (
