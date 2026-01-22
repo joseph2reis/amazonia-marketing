@@ -50,11 +50,9 @@ export default function AgroFooter() {
   return (
     <footer id="contato" className="bg-surface-strong border-t border-border">
       
-      {/* Essa verificação esconde os números APENAS se estiver na página de login.
-          Se quiser esconder no registro também, mude para:
-          {!pathname?.startsWith("/auth") && ( 
+      {/* Essa verificação esconde os números das páginas!!!
       */}
-      {!pathname?.startsWith("/auth") && (
+      {!pathname?.startsWith("/auth") && !pathname?.startsWith("/produto") && !pathname?.startsWith("/produtos") && (
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
