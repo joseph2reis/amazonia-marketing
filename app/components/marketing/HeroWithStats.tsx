@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import imageHero from "@/public/hero/image-hero.png";
 import { motion } from "framer-motion";
+import HeroCarousel from "./HeroCarousel";
 
 function AnimatedNumber({
   value,
@@ -163,7 +164,9 @@ export default function AgroHeroWithStats() {
               </p>
               <p className="text-sm text-text-muted">Comunidades atendidas</p>
             </motion.div>
+            
           </motion.div>
+          
         </motion.div>
 
         {/* Image - Animação da direita */}

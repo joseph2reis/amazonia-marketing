@@ -4,8 +4,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+// 1. IMPORTANTE: Importar o Carrossel (ajuste o caminho se necessário)
+import HeroCarousel from "../marketing/HeroCarousel";
 
-// Reutilizando o AnimatedNumber do Hero
 function AnimatedNumber({
   value,
   duration = 1200,
@@ -42,15 +43,15 @@ export default function AgroFooter() {
     if (!email) return;
 
     console.log("Newsletter inscrita:", email);
-    // Aqui você conecta com sua API (ex: Mailchimp, Resend, etc.)
-    alert("Obrigado por se inscrever! 🌱"); // feedback temporário
+    alert("Obrigado por se inscrever! 🌱");
     setEmail("");
   }
 
   return (
     <footer id="contato" className="bg-surface-strong border-t border-border">
-      
-      {/* Essa verificação esconde os números das páginas!!!
+
+      {/* Esta seção contém os DADOS e agora o CARROSSEL.
+          Ela só aparece se NÃO estiver nas páginas de auth/produto 
       */}
       {!pathname?.startsWith("/auth") && !pathname?.startsWith("/produto") && !pathname?.startsWith("/produtos") && (
         <motion.div
@@ -58,10 +59,12 @@ export default function AgroFooter() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="bg-primary/5 py-16"
+          className="bg-primary/2 py-16"
         >
           <div className="mx-auto max-w-7xl px-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+
+            {/* GRID DOS NÚMEROS (3 Colunas) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center mb-12">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -98,13 +101,29 @@ export default function AgroFooter() {
                 <p className="mt-2 text-text-muted">Comunidades atendidas</p>
               </motion.div>
             </div>
+            {/* FIM DO GRID DE NÚMEROS */}
           </div>
         </motion.div>
       )}
-      {/* --- FIM DA MUDANÇA --- */}
-
-      {/* Footer Principal */}
+      
+      {/* Carrossel - Não aparecer em outras páginas */}
+      {!pathname?.startsWith("/auth") && !pathname?.startsWith("/produto") && !pathname?.startsWith("/produtos") && (
+        <div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="border-t border-primary/10"
+          >
+            <HeroCarousel />
+          </motion.div>
+        </div>
+      )}
+      
+      {/* Footer Principal (Newsletter e Links) */}
       <div className="mx-auto max-w-7xl px-6 py-20">
+
         {/* Newsletter */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -167,13 +186,13 @@ export default function AgroFooter() {
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <Image
-                src="/logo_icon.png"  // Certifique-se que o nome do arquivo está igual na pasta public
+                src="/logo-ver.png"
                 alt="Logo AgroAmazônia"
-                width={40}       // 40px é equivalente ao h-10 do Tailwind
+                width={40}
                 height={40}
-                className="h-15 w-auto object-contain" // Garante que a logo não distorça
+                className="h-15 w-auto object-contain"
               />
-              <span className="text-xl font-bold text-text">Agro<span className="text-primary">Amazônia</span></span>
+              <span className="text-xl font-bold text-text" style={{ fontFamily: 'Calibri, sans-serif', fontWeight: 'bold' }}>Amazônia <span className="text-primary">Marketing</span></span>
             </div>
             <p className="text-sm text-text-muted leading-relaxed">
               Conectando inovação, sustentabilidade e agricultura responsável no
@@ -231,10 +250,10 @@ export default function AgroFooter() {
             </h4>
             <ul className="space-y-3 text-text-muted">
               <li className="flex items-center gap-2">
-                <span>📍</span> Amazônia, Brasil
+                <span>📍</span> Pará, Brasil
               </li>
               <li className="flex items-center gap-2">
-                <span>✉️</span> contato@agroamazonia.com
+                <span>✉️</span> contato@amazoniamarketing.com
               </li>
               <li className="flex items-center gap-2">
                 <span>📞</span> (00) 00000-0000
@@ -247,7 +266,7 @@ export default function AgroFooter() {
         <div className="mt-16 pt-10 border-t border-border">
           <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
             <p className="text-xs text-text-muted">
-              © {new Date().getFullYear()} AgroAmazônia. Todos os direitos
+              © {new Date().getFullYear()} Amazônia Marketing. Todos os direitos
               reservados.
             </p>
 
