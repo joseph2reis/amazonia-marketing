@@ -59,7 +59,7 @@ export default function Sidebar({ user }: SidebarProps) {
       <aside
         className={`
           fixed lg:static z-50 h-screen bg-surface-strong border-r border-border
-          flex flex-col transition-all duration-300
+          flex flex-col transition-all duration-300 
           ${collapsed ? "w-20" : "w-64"}
           ${mobileOpen ? "left-0" : "-left-full"}
           lg:left-0

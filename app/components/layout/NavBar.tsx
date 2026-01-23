@@ -22,13 +22,13 @@ export default function AgroNavbar() {
         <div className="flex items-center gap-6">
           <Link href={"/"} className="flex items-center gap-2 group">
             <Image
-              src="/logo_icon.png"  // Certifique-se que o nome do arquivo está igual na pasta public
+              src="/logo-ver.png"  
               alt="Logo AgroAmazônia"
-              width={40}       // 40px é equivalente ao h-10 do Tailwind
+              width={40}       
               height={40}
-              className="h-15 w-auto object-contain" // Garante que a logo não distorça
+              className="h-15 w-auto object-contain" 
             />
-            <span className="text-xl font-bold text-text">Agro<span className="text-primary">Amazônia</span></span>
+            <span className="text-xl font-bold text-text" style={{ fontFamily: 'Calibri, sans-serif', fontWeight: 'bold' }}>Amazônia <span className="text-primary">Marketing</span></span>
           </Link>
 
           <div className="relative hidden md:block">

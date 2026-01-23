@@ -22,7 +22,7 @@ export default function AboutSection() {
             transition={{ delay: 0.2, duration: 0.9 }}
             className="text-3xl font-bold tracking-tight text-text sm:text-4xl"
           >
-            Sobre o Agro<span className="text-primary"> Amazônia</span>
+            Sobre a Amazônia <span className="text-primary">Marketing</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -190,6 +190,7 @@ export default function AboutSection() {
                 Fale com a gente →
               </a>
             </motion.div>
+            
           </motion.div>
         </div>
       </div>
