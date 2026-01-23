@@ -100,11 +100,9 @@ export default function AboutSection() {
               transition={{ duration: 0.7 }}
             >
               <p className="mt-4 text-text-muted leading-relaxed text-justify">
-                Somos uma plataforma dedicada a produtores, cooperativas,
-                agrônomos e empresas do agronegócio brasileiro. Nosso objetivo é
-                democratizar o acesso a informações técnicas atualizadas,
-                análises de mercado, novas tecnologias e boas práticas para
-                aumentar a produtividade e a sustentabilidade das lavouras.
+                Fundada em 20 de setembro de 2007, em Salinópolis-PA, a <span className="font-semibold text-primary">
+                Amazônia Marketing
+              </span> nasceu com a missão de criar informações inteligentes que impulsionam o desenvolvimento regional. Especializada em consultoria de gestão empresarial, transformamos conhecimento em soluções práticas para quem vive e produz na Amazônia.
               </p>
             </motion.div>
 
@@ -166,12 +164,11 @@ export default function AboutSection() {
               transition={{ duration: 0.7 }}
               className="text-text-muted leading-relaxed text-justify"
             >
-              Acreditamos que o futuro do agro brasileiro passa por{" "}
-              <span className="font-medium text-primary">
-                conhecimento compartilhado
+              Nossa prioridade é o crescimento em{" "}
+              <span className="font-semibold text-primary">
+                excelência
               </span>
-              , adoção de tecnologias de precisão e manejo sustentável. Estamos
-              aqui para apoiar essa transformação.
+              , alinhados aos objetivos de cada parceiro. Aceitamos desafios baseados no compromisso real com o desenvolvimento regional, garantindo que cada conexão gerada entregue valor direto ao produtor e à empresa.
             </motion.p>
 
             {/* CTA */}
@@ -187,7 +184,7 @@ export default function AboutSection() {
                 href="/contato"
                 className="inline-flex items-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-primary/90 hover:shadow-md"
               >
-                Fale com a gente →
+                Falar com um Consultor →
               </a>
             </motion.div>
             

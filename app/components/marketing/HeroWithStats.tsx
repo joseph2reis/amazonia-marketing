@@ -59,7 +59,7 @@ export default function AgroHeroWithStats() {
             transition={{ delay: 0.2, duration: 0.6 }}
             className="inline-flex items-center rounded-full bg-primary-soft px-4 py-1 text-sm font-medium text-primary"
           >
-            🌱 Agro sustentável da Amazônia
+            🌱 Sua Produção. Nossa Vitrine
           </motion.span>
 
           <motion.h1
@@ -69,8 +69,7 @@ export default function AgroHeroWithStats() {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="text-4xl font-bold tracking-tight text-text sm:text-5xl lg:text-6xl"
           >
-            Impacto real no campo e na
-            <span className="block text-primary"> floresta amazônica</span>
+            Anuncie seus produtos na nossa plataforma. Conecte a <span className=" text-primary">Amazônia ao mundo.</span>
           </motion.h1>
 
           <motion.p
@@ -80,8 +79,7 @@ export default function AgroHeroWithStats() {
             transition={{ delay: 0.5, duration: 0.7 }}
             className="max-w-xl text-base leading-relaxed text-text-muted sm:text-lg"
           >
-            Fortalecemos a agricultura sustentável conectando tecnologia,
-            produtores locais e preservação ambiental.
+            A plataforma da Amazônia Marketing conecta produtores e abre portas para o comércio justo. Anuncie seus produtos, conte sua história e alcance novos mercados na Amazônia Paraense.
           </motion.p>
 
           {/* Actions */}
@@ -96,14 +94,14 @@ export default function AgroHeroWithStats() {
               href="#produtos"
               className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary/90 transition"
             >
-              Explorar soluções
+              Começar a Vender agora
             </Link>
 
             <Link
               href="#impacto"
               className="rounded-full border border-primary px-6 py-3 text-sm font-semibold text-text hover:border-primary hover:text-primary transition"
             >
-              Nosso impacto
+              Explorar Vitrine de Produtos
             </Link>
           </motion.div>
 

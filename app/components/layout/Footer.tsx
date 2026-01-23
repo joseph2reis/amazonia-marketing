@@ -84,9 +84,9 @@ export default function AgroFooter() {
                 transition={{ delay: 0.4 }}
               >
                 <p className="text-4xl font-bold text-secondary">
-                  <AnimatedNumber value={85000} /> ha
+                  <AnimatedNumber value={100} />%
                 </p>
-                <p className="mt-2 text-text-muted">Área preservada</p>
+                <p className="mt-2 text-text-muted">Rastreabilidade Garantida</p>
               </motion.div>
 
               <motion.div
@@ -96,9 +96,9 @@ export default function AgroFooter() {
                 transition={{ delay: 0.6 }}
               >
                 <p className="text-4xl font-bold text-primary">
-                  <AnimatedNumber value={320} />
+                  <AnimatedNumber value={15} />+
                 </p>
-                <p className="mt-2 text-text-muted">Comunidades atendidas</p>
+                <p className="mt-2 text-text-muted">Cooperativas do Pará Conectadas</p>
               </motion.div>
             </div>
             {/* FIM DO GRID DE NÚMEROS */}
@@ -250,10 +250,10 @@ export default function AgroFooter() {
             </h4>
             <ul className="space-y-3 text-text-muted">
               <li className="flex items-center gap-2">
-                <span>📍</span> Pará, Brasil
+                <span>📍</span> Salinópolis - Pará, Brasil
               </li>
               <li className="flex items-center gap-2">
-                <span>✉️</span> contato@amazoniamarketing.com
+                <span>✉️</span> contato@amkt.net
               </li>
               <li className="flex items-center gap-2">
                 <span>📞</span> (00) 00000-0000
