@@ -1,5 +1,6 @@
-import { products } from "@/app/database/products";
-import AgroProductDetails from "@/app/components/ecommerce/ProductDetails";
+import { ProductService } from "@/app/services/ProductService";
+import ProductDetails from "@/app/components/ecommerce/ProductDetails";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{
@@ -10,13 +11,29 @@ type Props = {
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
 
-  const product = products.find((item) => item.slug === slug);
+  const product = await ProductService.findBySlug(slug);
 
-  if (!product) {
-    return (
-      <div className="py-24 text-center text-text">Produto não encontrado</div>
-    );
+  if (!product || !product.company) {
+    notFound();
   }
 
-  return <AgroProductDetails product={product} />;
+  const formattedProduct = {
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    stock: product.stock,
+    category: product.category,
+    images: product.images.map((img: any) => img.url),
+    company: {
+      name: product.company.name ?? "Empresa Parceira",
+      cel: product.company.cel ?? "",
+      phone: product.company.phone ?? "",
+    },
+  };
+
+  return (
+    <main className="min-h-screen bg-surface">
+      <ProductDetails product={formattedProduct} />
+    </main>
+  );
 }

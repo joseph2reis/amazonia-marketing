@@ -49,81 +49,86 @@ export default function AgroFooter() {
 
   return (
     <footer id="contato" className="bg-surface-strong border-t border-border">
-
       {/* Esta seção contém os DADOS e agora o CARROSSEL.
           Ela só aparece se NÃO estiver nas páginas de auth/produto 
       */}
-      {!pathname?.startsWith("/auth") && !pathname?.startsWith("/produto") && !pathname?.startsWith("/produtos") && (
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="bg-primary/2 py-16"
-        >
-          <div className="mx-auto max-w-7xl px-6">
-
-            {/* GRID DOS NÚMEROS (3 Colunas) */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center mb-12">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-              >
-                <p className="text-4xl font-bold text-primary">
-                  <AnimatedNumber value={1200} />+
-                </p>
-                <p className="mt-2 text-text-muted">Produtores parceiros</p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4 }}
-              >
-                <p className="text-4xl font-bold text-secondary">
-                  <AnimatedNumber value={100} />%
-                </p>
-                <p className="mt-2 text-text-muted">Rastreabilidade Garantida</p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6 }}
-              >
-                <p className="text-4xl font-bold text-primary">
-                  <AnimatedNumber value={15} />+
-                </p>
-                <p className="mt-2 text-text-muted">Cooperativas do Pará Conectadas</p>
-              </motion.div>
-            </div>
-            {/* FIM DO GRID DE NÚMEROS */}
-          </div>
-        </motion.div>
-      )}
-      
-      {/* Carrossel - Não aparecer em outras páginas */}
-      {!pathname?.startsWith("/auth") && !pathname?.startsWith("/produto") && !pathname?.startsWith("/produtos") && (
-        <div>
+      {!pathname?.startsWith("/auth") &&
+        !pathname?.startsWith("/produto") &&
+        !pathname?.startsWith("/produtos") && (
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="border-t border-primary/10"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="bg-primary/2 py-16"
           >
-            <HeroCarousel />
+            <div className="mx-auto max-w-7xl px-6">
+              {/* GRID DOS NÚMEROS (3 Colunas) */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center mb-12">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <p className="text-4xl font-bold text-primary">
+                    <AnimatedNumber value={1200} />+
+                  </p>
+                  <p className="mt-2 text-text-muted">Produtores parceiros</p>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <p className="text-4xl font-bold text-secondary">
+                    <AnimatedNumber value={100} />%
+                  </p>
+                  <p className="mt-2 text-text-muted">
+                    Rastreabilidade Garantida
+                  </p>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6 }}
+                >
+                  <p className="text-4xl font-bold text-primary">
+                    <AnimatedNumber value={15} />+
+                  </p>
+                  <p className="mt-2 text-text-muted">
+                    Cooperativas do Pará Conectadas
+                  </p>
+                </motion.div>
+              </div>
+              {/* FIM DO GRID DE NÚMEROS */}
+            </div>
           </motion.div>
-        </div>
-      )}
-      
+        )}
+
+      {/* Carrossel - Não aparecer em outras páginas */}
+      {!pathname?.startsWith("/auth") &&
+        !pathname?.startsWith("/produto") &&
+        !pathname?.startsWith("/produtos") && (
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="border-t border-primary/10"
+            >
+              <HeroCarousel />
+            </motion.div>
+          </div>
+        )}
+
       {/* Footer Principal (Newsletter e Links) */}
       <div className="mx-auto max-w-7xl px-6 py-20">
-
         {/* Newsletter */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -180,11 +185,11 @@ export default function AgroFooter() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="grid gap-12 md:grid-cols-4"
+          className="grid gap-12 md:grid-cols-4 justify-items-center text-center"
         >
           {/* Brand */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-3">
+          <div className="space-y-6 flex flex-col items-center">
+            <div className="flex items-center gap-3 mx-auto">
               <Image
                 src="/logo-ver.png"
                 alt="Logo AgroAmazônia"
@@ -192,7 +197,15 @@ export default function AgroFooter() {
                 height={40}
                 className="h-15 w-auto object-contain"
               />
-              <span className="text-xl font-bold text-text" style={{ fontFamily: 'Calibri, sans-serif', fontWeight: 'bold' }}>Amazônia <span className="text-primary">Marketing</span></span>
+              <span
+                className="text-xl font-bold text-text"
+                style={{
+                  fontFamily: "Calibri, sans-serif",
+                  fontWeight: "bold",
+                }}
+              >
+                Amazônia <span className="text-primary">Marketing</span>
+              </span>
             </div>
             <p className="text-sm text-text-muted leading-relaxed">
               Conectando inovação, sustentabilidade e agricultura responsável no
@@ -244,18 +257,18 @@ export default function AgroFooter() {
           </div>
 
           {/* Contato */}
-          <div>
+          <div className="text-center">
             <h4 className="mb-5 text-sm font-semibold uppercase tracking-wider text-text">
               Contato
             </h4>
             <ul className="space-y-3 text-text-muted">
-              <li className="flex items-center gap-2">
+              <li>
                 <span>📍</span> Salinópolis - Pará, Brasil
               </li>
-              <li className="flex items-center gap-2">
+              <li>
                 <span>✉️</span> contato@amkt.net
               </li>
-              <li className="flex items-center gap-2">
+              <li>
                 <span>📞</span> (00) 00000-0000
               </li>
             </ul>

@@ -13,6 +13,7 @@ import {
   HiChevronRight,
 } from "react-icons/hi";
 import { useTheme } from "next-themes";
+import { FaBoxes } from "react-icons/fa";
 
 interface SidebarProps {
   user: {
@@ -31,9 +32,28 @@ export default function Sidebar({ user }: SidebarProps) {
 
   const menuItems = [
     { name: "Início", href: "/dashboard", icon: HiOutlineHome },
-    { name: "Relatórios", href: "/dashboard/reports", icon: HiOutlineChartBar },
-    { name: "Equipe", href: "/dashboard/team", icon: HiOutlineUserGroup },
-    ...(user?.role === "ADMIN" ? [{ name: "Empresas", href: "/dashboard/companies", icon: HiOutlineUserGroup }] : []),
+    { name: "Produtos", href: "/dashboard/products", icon: FaBoxes },
+    {
+      name: "Relatórios",
+      href: "/dashboard/reports",
+      icon: HiOutlineChartBar,
+      disabled: true,
+    },
+    {
+      name: "Equipe",
+      href: "/dashboard/team",
+      icon: HiOutlineUserGroup,
+      disabled: true,
+    },
+    ...(user?.role === "ADMIN"
+      ? [
+          {
+            name: "Empresas",
+            href: "/dashboard/companies",
+            icon: HiOutlineUserGroup,
+          },
+        ]
+      : []),
   ];
 
   useEffect(() => {
@@ -92,20 +112,45 @@ export default function Sidebar({ user }: SidebarProps) {
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
+            const isDisabled = item.disabled;
+
+            // Se estiver desabilitado, renderizamos uma div estilizada em vez de um Link
+            const content = (
+              <div
+                className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-primary text-white"
+                    : isDisabled
+                      ? "text-text-muted/40 cursor-not-allowed" // Estilo desabilitado
+                      : "text-text-muted hover:bg-surface hover:text-text"
+                }`}
+              >
+                <Icon size={20} />
+                {!collapsed && (
+                  <div className="flex items-center justify-between flex-1">
+                    <span>{item.name}</span>
+                    {isDisabled && (
+                      <span className="text-[10px] bg-border px-1.5 py-0.5 rounded uppercase font-bold text-text-muted">
+                        Breve
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+
+            // Se estiver desabilitado, não renderiza o Link do Next.js
+            if (isDisabled) {
+              return <div key={item.name}>{content}</div>;
+            }
 
             return (
               <Link
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors ${
-                  isActive
-                    ? "bg-primary text-white"
-                    : "text-text-muted hover:bg-surface hover:text-text"
-                }`}
               >
-                <Icon size={20} />
-                {!collapsed && <span>{item.name}</span>}
+                {content}
               </Link>
             );
           })}

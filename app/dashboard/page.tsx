@@ -6,19 +6,18 @@ import { useSession } from "next-auth/react";
 import {
   FaBoxOpen,
   FaShoppingCart,
-  FaDollarSign,
-  FaUsers,
   FaBuilding,
   FaClock,
   FaCheckCircle,
+  FaBoxes,
+  FaArrowRight,
 } from "react-icons/fa";
-import { products } from "../database/products";
 
 type StatsItem = {
   title: string;
   value: string | number;
   icon: React.ComponentType<any>;
-  color?: string;
+  color: string;
 };
 
 export default function DashboardPage() {
@@ -26,39 +25,15 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<StatsItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const isAdmin = session?.user?.role === "ADMIN";
+
   useEffect(() => {
-    if (session?.user?.role === "ADMIN") {
+    if (isAdmin) {
       fetchAdminStats();
     } else {
-      setStats([
-        {
-          title: "Meus Produtos",
-          value: products.length,
-          icon: FaBoxOpen,
-          color: "text-blue-500",
-        },
-        {
-          title: "Pedidos",
-          value: "12",
-          icon: FaShoppingCart,
-          color: "text-green-500",
-        },
-        {
-          title: "Faturamento",
-          value: "R$ 2.340",
-          icon: FaDollarSign,
-          color: "text-yellow-500",
-        },
-        {
-          title: "Avaliacoes",
-          value: "4.8",
-          icon: FaUsers,
-          color: "text-purple-500",
-        },
-      ]);
-      setLoading(false);
+      fetchUserStats();
     }
-  }, [session]);
+  }, [session, isAdmin]);
 
   const fetchAdminStats = async () => {
     try {
@@ -67,8 +42,12 @@ export default function DashboardPage() {
         fetch("/api/admin/stats/products"),
       ]);
 
-      const companiesData = companiesRes.ok ? await companiesRes.json() : { pending: 0, approved: 0 };
-      const productsData = productsRes.ok ? await productsRes.json() : { total: 0 };
+      const companiesData = companiesRes.ok
+        ? await companiesRes.json()
+        : { pending: 0, approved: 0 };
+      const productsData = productsRes.ok
+        ? await productsRes.json()
+        : { total: 0, totalStock: 0 };
 
       setStats([
         {
@@ -78,176 +57,176 @@ export default function DashboardPage() {
           color: "text-orange-500",
         },
         {
-          title: "Empresas Aprovadas",
+          title: "Empresas Ativas",
           value: companiesData.approved,
           icon: FaCheckCircle,
           color: "text-green-500",
         },
         {
-          title: "Produtos Totais",
+          title: "Modelos de Produtos",
           value: productsData.total,
           icon: FaBoxOpen,
           color: "text-blue-500",
         },
         {
-          title: "Empresas Ativas",
-          value: companiesData.approved,
-          icon: FaBuilding,
-          color: "text-indigo-500",
+          title: "Total em Estoque",
+          value: productsData.totalStock,
+          icon: FaBoxes,
+          color: "text-primary",
         },
       ]);
     } catch (error) {
-      console.error("Erro ao buscar estatisticas:", error);
-      setStats([
-        {
-          title: "Empresas Pendentes",
-          value: 0,
-          icon: FaClock,
-          color: "text-orange-500",
-        },
-        {
-          title: "Empresas Aprovadas",
-          value: 0,
-          icon: FaCheckCircle,
-          color: "text-green-500",
-        },
-        {
-          title: "Produtos Totais",
-          value: 0,
-          icon: FaBoxOpen,
-          color: "text-blue-500",
-        },
-        {
-          title: "Empresas Ativas",
-          value: 0,
-          icon: FaBuilding,
-          color: "text-indigo-500",
-        },
-      ]);
+      console.error("Erro ao buscar estatísticas:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) {
-    return (
-      <section className="bg-surface px-4 py-6 sm:px-6 lg:px-8">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-300 rounded w-1/4 mb-4"></div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="bg-surface-strong p-6 rounded-xl">
-                <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
-                <div className="h-8 bg-gray-300 rounded w-1/2"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const fetchUserStats = async () => {
+    setStats([
+      {
+        title: "Meus Produtos",
+        value: "---",
+        icon: FaBoxOpen,
+        color: "text-blue-500",
+      },
+      {
+        title: "Vendas Totais",
+        value: "0",
+        icon: FaShoppingCart,
+        color: "text-green-500",
+      },
+    ]);
+    setLoading(false);
+  };
+
+  if (loading) return null; // Ou um skeleton simples
 
   return (
-    <section className="bg-surface px-4 py-6 sm:px-6 lg:px-8">
-      <header className="mb-8 sm:mb-10">
-        <h1 className="text-2xl sm:text-3xl font-bold text-text">
-          Dashboard {session?.user?.role === "ADMIN" ? "Administrativo" : ""}
-        </h1>
-        <p className="mt-1 text-sm sm:text-base text-text-muted">
-          {session?.user?.role === "ADMIN"
-            ? "Gerencie empresas e produtos da plataforma"
-            : "Visao geral da sua loja"}
-        </p>
-      </header>
+    <section className="bg-surface px-6 py-8 min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        <header className="mb-10">
+          <h1 className="text-3xl font-black text-text tracking-tight">
+            Dashboard{" "}
+            <span className="text-primary">
+              {isAdmin ? "Admin" : "Lojista"}
+            </span>
+          </h1>
+          <p className="text-text-muted font-medium mt-1">
+            Controle global da plataforma e parceiros.
+          </p>
+        </header>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((item, index) => {
-          const Icon = item.icon;
-          return (
-            <div
-              key={index}
-              className="bg-surface-strong p-6 rounded-xl border border-border hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-center justify-between">
+        {/* STATS CARDS - CLEAN DESIGN */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={index}
+                className="bg-surface-strong p-6 rounded-2xl border border-border flex items-center gap-5 shadow-sm"
+              >
+                <div
+                  className={`p-4 rounded-xl bg-surface ${item.color} border border-border`}
+                >
+                  <Icon size={20} />
+                </div>
                 <div>
-                  <p className="text-sm font-medium text-text-muted">
+                  <p className="text-[10px] font-black text-text-muted uppercase tracking-widest">
                     {item.title}
                   </p>
-                  <p className="text-2xl font-bold text-text mt-1">
+                  <p className="text-2xl font-black text-text leading-none mt-1">
                     {item.value}
                   </p>
                 </div>
-                <div className={`text-2xl ${item.color || "text-primary"}`}>
-                  <Icon />
-                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
+
+        {/* NAVEGAÇÃO RÁPIDA - REFEITA */}
+        <div className="mt-16">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="h-8 w-1.5 bg-primary rounded-full" />
+            <h2 className="text-xl font-black text-text uppercase tracking-wider">
+              Navegação Rápida
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {isAdmin ? (
+              <>
+                <QuickActionLink
+                  href="/dashboard/companies"
+                  title="Gerenciar Empresas"
+                  desc="Aprovação e status de parceiros"
+                  icon={<FaBuilding className="text-orange-500" />}
+                />
+                <QuickActionLink
+                  href="/dashboard/products"
+                  title="Moderação de Produtos"
+                  desc="Revisar catálogo da plataforma"
+                  icon={<FaBoxOpen className="text-blue-500" />}
+                />
+                <div className="p-6 rounded-2xl border border-border bg-surface-strong/50 opacity-40 cursor-not-allowed">
+                  <p className="font-bold text-text">Base de Clientes</p>
+                  <p className="text-xs text-text-muted">
+                    Gestão de compradores (Breve)
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                <QuickActionLink
+                  href="/dashboard/products"
+                  title="Meu Inventário"
+                  desc="Cadastrar e gerenciar produtos"
+                  icon={<FaBoxOpen className="text-blue-500" />}
+                />
+                <QuickActionLink
+                  href="/dashboard/orders"
+                  title="Vendas e Pedidos"
+                  desc="Acompanhar fluxo de saída"
+                  icon={<FaShoppingCart className="text-green-500" />}
+                />
+              </>
+            )}
+          </div>
+        </div>
       </div>
-
-      {session?.user?.role === "ADMIN" && (
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold text-text mb-4">Acoes Rapidas</h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <Link
-              href="/dashboard/companies"
-              className="bg-surface-strong p-6 rounded-xl border border-border hover:shadow-md transition-shadow block"
-            >
-              <div className="flex items-center">
-                <FaBuilding className="text-2xl text-orange-500 mr-3" />
-                <div>
-                  <h3 className="font-medium text-text">Gerenciar Empresas</h3>
-                  <p className="text-sm text-text-muted">Aprove ou visualize empresas</p>
-                </div>
-              </div>
-            </Link>
-
-            <Link
-              href="/dashboard/products"
-              className="bg-surface-strong p-6 rounded-xl border border-border hover:shadow-md transition-shadow block"
-            >
-              <div className="flex items-center">
-                <FaBoxOpen className="text-2xl text-blue-500 mr-3" />
-                <div>
-                  <h3 className="font-medium text-text">Produtos</h3>
-                  <p className="text-sm text-text-muted">Gerencie produtos da plataforma</p>
-                </div>
-              </div>
-            </Link>
-
-            <div className="bg-surface-strong p-6 rounded-xl border border-border">
-              <div className="flex items-center">
-                <FaUsers className="text-2xl text-green-500 mr-3" />
-                <div>
-                  <h3 className="font-medium text-text">Usuarios</h3>
-                  <p className="text-sm text-text-muted">Em breve</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {session?.user?.role !== "ADMIN" && (
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold text-text mb-4">Atalhos Rapidos</h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Link
-              href="/dashboard/products"
-              className="bg-surface-strong p-6 rounded-xl border border-border hover:shadow-md transition-shadow block"
-            >
-              <div className="flex items-center">
-                <FaBoxOpen className="text-2xl text-blue-500 mr-3" />
-                <div>
-                  <h3 className="font-medium text-text">Meus Produtos</h3>
-                  <p className="text-sm text-text-muted">Visualize e gerencie seus produtos</p>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
-      )}
     </section>
+  );
+}
+
+// Subcomponente para os Atalhos
+function QuickActionLink({
+  href,
+  title,
+  desc,
+  icon,
+}: {
+  href: string;
+  title: string;
+  desc: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group relative bg-surface-strong p-6 rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 shadow-sm hover:shadow-primary/5"
+    >
+      <div className="flex items-center justify-between mb-4">
+        <div className="p-3 rounded-xl bg-surface border border-border group-hover:bg-primary/10 transition-colors">
+          {icon}
+        </div>
+        <FaArrowRight className="text-text-muted opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all" />
+      </div>
+      <div>
+        <h3 className="font-black text-text group-hover:text-primary transition-colors">
+          {title}
+        </h3>
+        <p className="text-xs text-text-muted mt-1">{desc}</p>
+      </div>
+    </Link>
   );
 }

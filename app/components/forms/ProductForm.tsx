@@ -8,6 +8,7 @@ interface ProductFormProps {
     name: string;
     slug: string;
     price: number;
+    stock: number;
     category: string;
     description: string;
     images?: { url: string }[];
@@ -26,6 +27,7 @@ export default function ProductForm({
   const [slug, setSlug] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [stock, setStock] = useState("");
   const [category, setCategory] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [mainImage, setMainImage] = useState<string | null>(null);
@@ -40,6 +42,7 @@ export default function ProductForm({
       setSlug(initialData.slug);
       setDescription(initialData.description);
       setPrice(String(initialData.price));
+      setStock(String(initialData.stock || 0));
       setCategory(initialData.category);
 
       const urls = initialData.images?.map((img) => img.url) ?? [];
@@ -47,6 +50,24 @@ export default function ProductForm({
       setMainImage(urls[0] ?? null);
     }
   }, [initialData]);
+
+  // Função para gerar slug automaticamente
+  function handleNameChange(value: string) {
+    setName(value);
+
+    if (!productId) {
+      const generatedSlug = value
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/[\s_-]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
+      setSlug(generatedSlug);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -61,6 +82,7 @@ export default function ProductForm({
       slug,
       description,
       price: Number(price),
+      stock: Number(stock), // Enviando como número para o Prisma
       category,
       images: orderedImages,
     };
@@ -71,7 +93,7 @@ export default function ProductForm({
         method: productId ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-      }
+      },
     );
 
     setSaving(false);
@@ -87,72 +109,94 @@ export default function ProductForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-border bg-surface p-4 sm:p-6 space-y-4"
+      className="rounded-2xl border border-border bg-surface-strong p-4 sm:p-6 space-y-4 shadow-md"
     >
-      <h2 className="text-lg font-semibold">
-        {productId ? "Editar produto" : "Novo produto"}
+      <h2 className="text-xl font-bold text-text">
+        {productId ? "Editar produto" : "Cadastrar Novo Produto"}
       </h2>
 
-      {/* Campos */}
       <div className="grid gap-4 md:grid-cols-2">
-        <div>
-          <label className="text-sm">Nome</label>
+        <div className="md:col-span-1">
+          <label className="text-sm font-bold text-text">Nome do Produto</label>
           <input
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => handleNameChange(e.target.value)}
+            placeholder="Ex: Seu Produto"
             required
-            className="w-full rounded-lg border px-3 py-2"
+            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
         <div>
-          <label className="text-sm">Slug</label>
+          <label className="text-sm font-bold text-text">Slug (URL)</label>
           <input
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
+            placeholder="ex-seu-produto"
             required
-            className="w-full rounded-lg border px-3 py-2"
+            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
         <div className="md:col-span-2">
-          <label className="text-sm">Descrição</label>
+          <label className="text-sm font-bold text-text">
+            Descrição Detalhada
+          </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
-            className="w-full rounded-lg border px-3 py-2"
+            placeholder="Descreva as características técnicas e benefícios do produto..."
+            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
         <div>
-          <label className="text-sm">Preço</label>
+          <label className="text-sm font-bold text-text">Preço (R$)</label>
           <input
             type="number"
             step="0.01"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
+            placeholder="0.00"
             required
-            className="w-full rounded-lg border px-3 py-2"
+            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
+        {/* CAMPO DE ESTOQUE ADICIONADO */}
         <div>
-          <label className="text-sm">Categoria</label>
+          <label className="text-sm font-bold text-text">
+            Quantidade em Estoque
+          </label>
+          <input
+            type="number"
+            value={stock}
+            onChange={(e) => setStock(e.target.value)}
+            placeholder="Ex: 50"
+            required
+            min="0"
+            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <label className="text-sm font-bold text-text">Categoria</label>
           <input
             value={category}
             onChange={(e) => setCategory(e.target.value)}
+            placeholder="Ex: Separado, Por, Virgulas"
             required
-            className="w-full rounded-lg border px-3 py-2"
+            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       </div>
 
-      {/* IMAGENS */}
-      <div className="space-y-3">
-        <label className="text-sm font-medium flex items-center gap-2">
-          <HiPaperClip className="text-gray-500" />
-          Imagens do produto
+      {/* SEÇÃO DE IMAGENS */}
+      <div className="space-y-3 pt-2">
+        <label className="text-sm font-bold text-text flex items-center gap-2">
+          <HiPaperClip className="text-primary" />
+          Imagens do Produto
         </label>
 
         <input
@@ -165,14 +209,12 @@ export default function ProductForm({
             if (!files.length) return;
 
             setUploadError(null);
-            const MAX_SIZE = 1 * 1024 * 1024;
+            const MAX_SIZE = 1 * 1024 * 1024; // 1MB
 
             const oversized = files.filter((f) => f.size > MAX_SIZE);
             if (oversized.length) {
               setUploadError(
-                `Arquivo(s) muito grande(s): ${oversized
-                  .map((f) => f.name)
-                  .join(", ")}. Limite de 1MB.`
+                `Arquivos excedem 1MB: ${oversized.map((f) => f.name).join(", ")}`,
               );
               e.target.value = "";
               return;
@@ -180,20 +222,21 @@ export default function ProductForm({
 
             setUploading(true);
             setUploadProgress(0);
-
             const uploaded: string[] = [];
 
             for (let i = 0; i < files.length; i++) {
               const formData = new FormData();
               formData.append("file", files[i]);
-
-              const res = await fetch("/api/upload", {
-                method: "POST",
-                body: formData,
-              });
-              const data = await res.json();
-
-              if (res.ok) uploaded.push(data.url);
+              try {
+                const res = await fetch("/api/upload", {
+                  method: "POST",
+                  body: formData,
+                });
+                const data = await res.json();
+                if (res.ok) uploaded.push(data.url);
+              } catch (err) {
+                console.error("Erro upload", err);
+              }
               setUploadProgress(Math.round(((i + 1) / files.length) * 100));
             }
 
@@ -202,98 +245,92 @@ export default function ProductForm({
               setMainImage((old) => old ?? merged[0]);
               return merged;
             });
-
             setUploading(false);
           }}
-          className="w-full text-sm border rounded-lg cursor-pointer
-          file:mr-4 file:py-2 file:px-4
-          file:rounded-md file:border-0
-          file:text-sm file:font-semibold
-          file:bg-gray-100 file:text-gray-700
-          hover:file:bg-gray-200
-          disabled:opacity-50"
+          className="w-full text-sm text-text-muted border border-border rounded-lg cursor-pointer bg-surface
+          file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0
+          file:text-sm file:font-semibold file:bg-primary file:text-white
+          hover:file:opacity-90 disabled:opacity-50"
         />
 
         {uploadError && (
-          <div className="rounded-lg bg-red-50 p-3 text-xs text-red-600 border">
+          <div className="text-xs text-red-500 font-medium">
             ⚠ {uploadError}
           </div>
         )}
 
         {uploading && (
-          <div className="space-y-2">
-            <div className="relative h-5 w-full rounded-full border overflow-hidden">
+          <div className="space-y-1">
+            <div className="h-2 w-full rounded-full bg-surface border border-border overflow-hidden">
               <div
-                className="h-full bg-primary transition-all"
+                className="h-full bg-primary transition-all duration-300"
                 style={{ width: `${uploadProgress}%` }}
               />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-[10px] font-bold text-white mix-blend-difference">
-                  {uploadProgress}%
-                </span>
-              </div>
             </div>
-            <p className="text-xs text-text-muted">
-              Fazendo upload das imagens...
+            <p className="text-[10px] text-text-muted uppercase font-bold tracking-wider">
+              Enviando: {uploadProgress}%
             </p>
           </div>
         )}
 
         {images.length > 0 && (
-          <div className="flex gap-4 overflow-x-auto pb-2">
+          <div className="flex gap-3 overflow-x-auto pb-4 pt-2">
             {images.map((url) => (
               <div
                 key={url}
                 onClick={() => setMainImage(url)}
-                className={`relative w-28 sm:w-32 shrink-0 rounded-lg border p-3 cursor-pointer ${
-                  mainImage === url ? "ring-2 ring-primary" : ""
+                className={`relative w-24 h-24 shrink-0 rounded-xl border-2 transition-all p-1 bg-white cursor-pointer ${
+                  mainImage === url
+                    ? "border-primary shadow-lg"
+                    : "border-border hover:border-text-muted"
                 }`}
               >
                 <img
                   src={url}
                   alt="Produto"
-                  className="h-24 w-full object-contain rounded"
+                  className="h-full w-full object-contain rounded-lg"
                 />
-
-                {mainImage === url && (
-                  <p className="mt-1 text-xs text-center">imagem principal</p>
-                )}
-
                 <button
                   type="button"
-                  onClick={() => {
-                    setImages((prev) => {
-                      const filtered = prev.filter((img) => img !== url);
-                      setMainImage(filtered[0] ?? null);
-                      return filtered;
-                    });
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setImages((prev) => prev.filter((img) => img !== url));
+                    if (mainImage === url) setMainImage(null);
                   }}
-                  className="absolute top-1 right-1 rounded bg-white/80 px-2 text-xs text-red-600"
+                  className="absolute -top-2 -right-2 rounded-full bg-red-500 text-white w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 shadow-md"
                 >
                   ✕
                 </button>
+                {mainImage === url && (
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary text-white text-[8px] px-2 py-0.5 rounded-full font-bold whitespace-nowrap">
+                    CAPA
+                  </div>
+                )}
               </div>
             ))}
           </div>
         )}
       </div>
 
-      {/* Ações */}
-      <div className="flex flex-col sm:flex-row justify-end gap-2 pt-4">
+      <div className="flex gap-3 pt-6">
         <button
           type="button"
           onClick={onCancel}
-          className="w-full sm:w-auto rounded-xl border px-4 py-2 text-text-muted hover:bg-surface-strong"
+          className="flex-1 rounded-xl border border-border px-4 py-3 text-text font-bold hover:bg-surface transition-colors"
         >
-          Cancelar
+          Descartar
         </button>
 
         <button
           type="submit"
           disabled={saving || uploading}
-          className="w-full sm:w-auto rounded-xl bg-primary px-4 py-2 text-white"
+          className="flex-1 rounded-xl bg-primary px-4 py-3 text-white font-bold hover:opacity-90 transition-opacity disabled:opacity-50"
         >
-          {saving ? "Salvando..." : "Salvar"}
+          {saving
+            ? "Salvando Alterações..."
+            : productId
+              ? "Atualizar Produto"
+              : "Publicar Produto"}
         </button>
       </div>
     </form>

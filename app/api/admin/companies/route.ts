@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { CompanyService } from "@/app/services/UserService";
+import { CompanyService } from "@/app/services/CompanyService"; 
 
 export async function GET() {
   try {
@@ -11,7 +11,7 @@ export async function GET() {
       return NextResponse.json({ message: "Acesso negado" }, { status: 403 });
     }
 
-    const companies = await CompanyService.findPending();
+    const companies = await CompanyService.findAll();
 
     return NextResponse.json(companies);
   } catch (error) {

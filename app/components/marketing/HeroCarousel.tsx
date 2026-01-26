@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
@@ -52,7 +51,7 @@ const testimonials = [
 
 export default function HeroCarousel() {
     return (
-        <div className="w-full mt-16">
+        <div className="w-full mt-16 px-4">
             {/* Texto Introdutório */}
             <div className="mb-8 text-center md:text-left">
                 <h3 className="text-3xl font-bold text-text text-center">

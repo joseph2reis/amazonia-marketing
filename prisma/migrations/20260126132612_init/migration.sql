@@ -47,8 +47,8 @@ CREATE TABLE "Company" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "cnpj" TEXT NOT NULL,
-    "cpf" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
+    "whatssap" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "approved" BOOLEAN NOT NULL DEFAULT false,
     "userId" TEXT NOT NULL,
@@ -68,9 +68,6 @@ CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Company_cnpj_key" ON "Company"("cnpj");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Company_cpf_key" ON "Company"("cpf");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Company_userId_key" ON "Company"("userId");

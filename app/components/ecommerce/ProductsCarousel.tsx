@@ -10,7 +10,21 @@ import "swiper/css/pagination";
 
 import { motion } from "framer-motion";
 import AgroCard from "./Card";
-import { products } from "../../database/products";
+
+// Definimos o tipo esperado baseado no seu Schema do Prisma
+interface ProductData {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  price: number;
+  category: string;
+  images: { url: string }[];
+}
+
+interface Props {
+  products: ProductData[];
+}
 
 const swiperConfig: SwiperOptions = {
   modules: [Navigation, Pagination],
@@ -29,11 +43,10 @@ const swiperConfig: SwiperOptions = {
   },
 };
 
-export default function AgroProductsCarousel() {
+export default function AgroProductsCarousel({ products = [] }: Props) {
   return (
     <section className="py-24 bg-surface">
       <div className="mx-auto max-w-7xl px-6">
-        {/* Header com animação */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -41,34 +54,20 @@ export default function AgroProductsCarousel() {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="mb-8 flex items-center justify-between"
         >
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-3xl font-bold text-text"
-          >
+          <h2 className="text-3xl font-black text-text tracking-tight uppercase">
             Produtos em destaque
-          </motion.h2>
+          </h2>
 
-          {/* Botões de navegação */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex items-center gap-3"
-          >
-            <button className="agro-prev text-white rounded-full border border-white p-2 hover:border-primary hover:text-primary transition">
+          <div className="flex items-center gap-3">
+            <button className="agro-prev flex h-10 w-10 items-center justify-center rounded-full border border-border text-text hover:border-primary hover:text-primary transition-all active:scale-90">
               ←
             </button>
-            <button className="agro-next text-white rounded-full border border-white p-2 hover:border-primary hover:text-primary transition">
+            <button className="agro-next flex h-10 w-10 items-center justify-center rounded-full border border-border text-text hover:border-primary hover:text-primary transition-all active:scale-90">
               →
             </button>
-          </motion.div>
+          </div>
         </motion.div>
 
-        {/* Carousel com stagger nos cards */}
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -77,10 +76,7 @@ export default function AgroProductsCarousel() {
             hidden: { opacity: 0 },
             visible: {
               opacity: 1,
-              transition: {
-                staggerChildren: 0.15, // intervalo entre cada card
-                delayChildren: 0.3,
-              },
+              transition: { staggerChildren: 0.1, delayChildren: 0.2 },
             },
           }}
         >
@@ -89,27 +85,25 @@ export default function AgroProductsCarousel() {
               <SwiperSlide key={product.id}>
                 <motion.div
                   variants={{
-                    hidden: { opacity: 0, y: 50, scale: 0.95 },
-                    visible: {
-                      opacity: 1,
-                      y: 0,
-                      scale: 1,
-                      transition: { duration: 0.6, ease: "easeOut" },
-                    },
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0 },
                   }}
                 >
                   <AgroCard
                     title={product.name}
                     description={product.description}
-                    image={product.images[0]}
-                    href={`/produto/${product.slug}`}
+                    image={product.images[0]?.url || "/placeholder.png"}
+                    href={`/produto/${product.slug}`} // Rota pública
                     footer={
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-semibold text-primary">
-                          {product.price}
+                      <div className="flex w-full items-center justify-between">
+                        <span className="text-lg font-black text-primary">
+                          {product.price.toLocaleString("pt-BR", {
+                            style: "currency",
+                            currency: "BRL",
+                          })}
                         </span>
-                        <span className="text-xs font-medium text-text-muted">
-                          Ver produto →
+                        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                          Comprar →
                         </span>
                       </div>
                     }

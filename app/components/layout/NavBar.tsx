@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FiSearch, FiX } from "react-icons/fi";
 import ThemeToggle from "@/app/components/ui/ThemeToggle";
 import Image from "next/image";
+import MobileMenu from "./MobileMenu";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -20,16 +21,25 @@ export default function AgroNavbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4">
         {/* Logo + Pesquisa */}
         <div className="flex items-center gap-6">
+          <MobileMenu />
+
           <Link href={"/"} className="flex items-center gap-2 group">
             <Image
-              src="/logo-ver.png"  
+              src="/logo-ver.png"
               alt="Logo AgroAmazônia"
-              width={40}       
+              width={40}
               height={40}
-              className="h-15 w-auto object-contain" 
+              className="w-auto object-contain"
             />
-            <span className="text-xl font-bold text-text" style={{ fontFamily: 'Calibri, sans-serif', fontWeight: 'bold' }}>Amazônia <span className="text-primary">Marketing</span></span>
+            <span
+              className="text-xl font-bold text-text xl:block"
+              style={{ fontFamily: "Calibri, sans-serif", fontWeight: "bold" }}
+            >
+              Amazônia <span className="text-primary">Marketing</span>
+            </span>
           </Link>
+
+          <ThemeToggle />
 
           <div className="relative hidden md:block">
             <FiSearch className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
@@ -57,8 +67,9 @@ export default function AgroNavbar() {
               href={item.href}
               key={item.label}
               onClick={() => setActive(item.label)}
-              className={`relative text-sm font-medium transition-colors hover:text-primary ${active === item.label ? "text-primary" : "text-text"
-                }`}
+              className={`relative text-sm font-medium transition-colors hover:text-primary ${
+                active === item.label ? "text-primary" : "text-text"
+              }`}
             >
               {item.label}
               {active === item.label && (
@@ -69,9 +80,7 @@ export default function AgroNavbar() {
         </nav>
 
         {/* Ações e Toggle de Tema */}
-        <div className="flex items-center gap-4">
-          <ThemeToggle />
-
+        <div className="hidden xl:flex items-center gap-4">
           <div className="h-6 w-px bg-border mx-1" />
 
           <Link
