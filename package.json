@@ -3,13 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "create-admin": "tsx scripts/create-admin.ts",
-    "lint": "eslint",
-    "prisma": "prisma generate",
-    "postinstall": "prisma generate"
+    "lint": "eslint"
   },
   "dependencies": {
     "@libsql/client": "0.8.1",
