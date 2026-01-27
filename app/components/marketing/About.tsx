@@ -59,7 +59,7 @@ export default function AboutSection() {
             className=" mb-10 relative rounded-2xl overflow-hidden border border-border shadow-lg group"
           >
             <Image
-              src="/about/image.png"
+              src="/about/imagem-sobre.webp"
               alt="Paisagem de lavoura sustentável ao pôr do sol"
               width={1200}
               height={800}
@@ -69,7 +69,7 @@ export default function AboutSection() {
             <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 text-white">
               <p className="text-sm font-medium opacity-90">
-                Brasil, safra 2025/26 – Tecnologia e sustentabilidade no campo
+                
               </p>
             </div>
           </motion.div>

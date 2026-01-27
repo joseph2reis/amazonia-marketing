@@ -45,7 +45,7 @@ const swiperConfig: SwiperOptions = {
 
 export default function AgroProductsCarousel({ products = [] }: Props) {
   return (
-    <section className="py-24 bg-surface">
+    <section id="marketplace" className="py-24 bg-surface">
       <div className="mx-auto max-w-7xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -55,7 +55,7 @@ export default function AgroProductsCarousel({ products = [] }: Props) {
           className="mb-8 flex items-center justify-between"
         >
           <h2 className="text-3xl font-black text-text tracking-tight uppercase">
-            Produtos em destaque
+            Marketplace
           </h2>
 
           <div className="flex items-center gap-3">

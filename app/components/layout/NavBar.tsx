@@ -8,8 +8,8 @@ import MobileMenu from "./MobileMenu";
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "Sobre", href: "#sobre" },
-  { label: "Contato", href: "#contato" },
+  { label: "Sobre", href: "/#sobre" },
+  { label: "Contato", href: "/#contato" },
 ];
 
 export default function AgroNavbar() {
@@ -38,8 +38,6 @@ export default function AgroNavbar() {
               Amazônia <span className="text-primary">Marketing</span>
             </span>
           </Link>
-
-          <ThemeToggle />
 
           <div className="relative hidden md:block">
             <FiSearch className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
@@ -80,19 +78,21 @@ export default function AgroNavbar() {
         </nav>
 
         {/* Ações e Toggle de Tema */}
-        <div className="hidden xl:flex items-center gap-4">
-          <div className="h-6 w-px bg-border mx-1" />
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
+
+          <div className="hidden xl:block h-6 w-px bg-border mx-1" />
 
           <Link
             href="/auth/login"
-            className="text-sm font-semibold text-text hover:text-primary transition-colors"
+            className="hidden xl:block text-sm font-semibold text-text hover:text-primary transition-colors"
           >
             Entrar
           </Link>
 
           <Link
             href="/auth/register"
-            className="rounded-full bg-primary px-5 py-2 text-sm font-bold text-white transition-all hover:opacity-90 active:scale-95 shadow-sm"
+            className="hidden xl:block rounded-full bg-primary px-5 py-2 text-sm font-bold text-white transition-all hover:opacity-90 active:scale-95 shadow-sm"
           >
             Começar
           </Link>

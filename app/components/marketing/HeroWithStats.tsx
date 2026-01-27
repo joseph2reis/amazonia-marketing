@@ -8,14 +8,14 @@ import { motion } from "framer-motion";
 
 export default function AgroHeroWithStats() {
   return (
-    <section className="relative overflow-hidden bg-surface">
+    <section className="relative overflow-hidden bg-surface h-[calc(100vh-160px)] mt-10">
       {/* Decorative gradients */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -top-40 -right-40 h-105 w-105 rounded-full bg-primary/20 blur-3xl" />
         <div className="absolute -bottom-40 -left-40 h-105 w-105 rounded-full bg-secondary/20 blur-3xl" />
       </div>
 
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-4 py-24 md:grid-cols-2">
+      <div className="mx-auto text-center xl:text-left grid max-w-7xl grid-cols-1 items-center gap-5 px-6 py-24 md:grid-cols-2">
         {/* Content - Animações da esquerda */}
         <motion.div
           initial={{ opacity: 0, x: -80 }}
@@ -39,10 +39,10 @@ export default function AgroHeroWithStats() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-4xl font-bold tracking-tight text-text sm:text-5xl lg:text-6xl"
+            className="text-4xl font-bold tracking-tight leading-tight text-text sm:text-5xl lg:text-7xl"
           >
-            Anuncie seus produtos na nossa plataforma. Conecte a{" "}
-            <span className=" text-primary">Amazônia ao mundo.</span>
+            Conecte Seu <br /> Produto{" "}
+            <span className=" text-primary">ao Mundo.</span>
           </motion.h1>
 
           <motion.p
@@ -50,7 +50,7 @@ export default function AgroHeroWithStats() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.5, duration: 0.7 }}
-            className="max-w-xl text-base leading-relaxed text-text-muted sm:text-lg"
+            className="max-w-md text-base leading-relaxed text-text-muted sm:text-lg"
           >
             A plataforma da Amazônia Marketing conecta produtores e abre portas
             para o comércio justo. Anuncie seus produtos, conte sua história e
@@ -63,17 +63,17 @@ export default function AgroHeroWithStats() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.7, duration: 0.6 }}
-            className="flex flex-wrap items-center gap-4"
+            className="flex flex-wrap items-center gap-4 justify-center xl:justify-start"
           >
             <Link
-              href="#produtos"
+              href="/auth/register"
               className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary/90 transition"
             >
               Começar a Vender agora
             </Link>
 
             <Link
-              href="#impacto"
+              href="#marketplace"
               className="rounded-full border border-primary px-6 py-3 text-sm font-semibold text-text hover:border-primary hover:text-primary transition"
             >
               Explorar Vitrine de Produtos
@@ -87,7 +87,7 @@ export default function AgroHeroWithStats() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="hidden md:block absolute mx-auto h-120 w-full"
+          className="md:block relative mx-auto h-150 w-full"
         >
           <Image
             src={imageHero}
