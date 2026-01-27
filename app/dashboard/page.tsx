@@ -103,7 +103,7 @@ export default function DashboardPage() {
   if (loading) return null; // Ou um skeleton simples
 
   return (
-    <section className="bg-surface px-6 py-8 min-h-screen">
+    <section className="bg-surface px-6 py-8">
       <div className="max-w-7xl mx-auto">
         <header className="mb-10">
           <h1 className="text-3xl font-bold text-text tracking-tight">

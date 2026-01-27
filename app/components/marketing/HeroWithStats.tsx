@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 
 export default function AgroHeroWithStats() {
   return (
-    <section className="relative overflow-hidden bg-surface mt-24">
+    <section className="relative overflow-hidden bg-surface">
       {/* Decorative gradients */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -top-40 -right-40 h-105 w-105 rounded-full bg-primary/20 blur-3xl" />

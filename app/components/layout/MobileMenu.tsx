@@ -48,7 +48,7 @@ export default function MobileMenu() {
 
       {/* Drawer LEFT */}
       <div
-        className={`fixed top-0 left-0 h-screen w-80 max-w-[85%] z-70 bg-surface border-r border-border shadow-2xl transition-transform duration-500 ease-in-out flex flex-col ${
+        className={`fixed top-0 left-0 bottom-0 w-80 max-w-[85%] z-70 bg-surface border-r border-border shadow-2xl transition-transform duration-500 ease-in-out flex flex-col ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
