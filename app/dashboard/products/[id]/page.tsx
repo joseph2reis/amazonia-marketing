@@ -129,7 +129,7 @@ export default function ProductViewPage() {
             <div className="flex items-center justify-between p-4 rounded-2xl bg-surface border border-border">
               <div>
                 <span className="text-xs text-text-muted uppercase font-bold tracking-wider">Preço do Produto</span>
-                <p className="text-3xl font-black text-primary">
+                <p className="text-3xl font-bold text-primary">
                   {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                 </p>
               </div>

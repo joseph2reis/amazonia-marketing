@@ -34,7 +34,7 @@ export default function AgroCard({
         />
         {category && (
           <div className="absolute left-3 top-3">
-            <span className="rounded-lg bg-black/50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md">
+            <span className="rounded-lg bg-bold/50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white backdrop-blur-md">
               {category}
             </span>
           </div>
@@ -44,7 +44,7 @@ export default function AgroCard({
       {/* Conteúdo do Card */}
       <div className="flex flex-col space-y-3 p-5">
         <div className="space-y-1">
-          <h3 className="text-lg font-black leading-tight text-text transition-colors group-hover:text-primary">
+          <h3 className="text-lg font-bold leading-tight text-text transition-colors group-hover:text-primary">
             {title}
           </h3>
           <p className="line-clamp-2 text-sm font-medium leading-relaxed text-text-muted">

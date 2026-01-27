@@ -191,7 +191,7 @@ export default function AgroFooter() {
           <div className="space-y-6 flex flex-col items-center">
             <div className="flex items-center gap-3 mx-auto">
               <Image
-                src="/logo-ver.png"
+                src="/logo_icon.png"
                 alt="Logo AgroAmazônia"
                 width={40}
                 height={40}
@@ -269,7 +269,7 @@ export default function AgroFooter() {
                 <span>✉️</span> contato@amkt.net
               </li>
               <li>
-                <span>📞</span> (00) 00000-0000
+                <span>📞</span> (91) 9 9112-6450
               </li>
             </ul>
           </div>

@@ -26,7 +26,7 @@ export default function ThemeToggle() {
         rounded-full border border-border
         bg-surface-strong text-text
         transition-all
-        hover:border-primary hover:text-primary 
+        hover:border-primary hover:text-primary cursor-pointer
       "
     >
       {isDark ? (

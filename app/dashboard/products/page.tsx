@@ -42,47 +42,41 @@ export default function ProductsPage() {
 
   const isAdmin = session?.user?.role === "ADMIN";
 
-  useEffect(() => {
-    if (!isAdmin && session) {
-      checkCompanyStatus();
-    }
-  }, [session, isAdmin]);
-
   async function checkCompanyStatus() {
     try {
       const res = await fetch("/api/company/check");
       const data = await res.json();
       setCompanyApproved(data.approved ?? false);
-    } catch (error) {
-      console.error("Erro ao verificar empresa:", error);
+    } catch {
       setCompanyApproved(false);
     }
   }
 
+  useEffect(() => {
+    if (!isAdmin && session) checkCompanyStatus();
+  }, [session, isAdmin]);
+
   async function fetchProducts() {
     setLoading(true);
+
     const params = new URLSearchParams();
     if (isAdmin && filter !== "ALL") params.append("status", filter);
 
     const endpoint = isAdmin
       ? `/api/admin/products?${params}`
       : "/api/products";
+
     try {
       const res = await fetch(endpoint);
       const data = await res.json();
       setProducts(Array.isArray(data) ? data : []);
-    } catch (error) {
-      console.error("Erro ao carregar produtos:", error);
-      setProducts([]);
     } finally {
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    if (status !== "loading") {
-      fetchProducts();
-    }
+    if (status !== "loading") fetchProducts();
   }, [filter, status]);
 
   async function handleDelete(id: number) {
@@ -93,20 +87,14 @@ export default function ProductsPage() {
 
   const updateProductStatus = async (
     id: number,
-    status: "APPROVED" | "REJECTED",
+    status: "APPROVED" | "REJECTED"
   ) => {
-    try {
-      const res = await fetch(`/api/admin/products/${id}/status`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status }),
-      });
-      if (res.ok) {
-        setProducts(products.map((p) => (p.id === id ? { ...p, status } : p)));
-      }
-    } catch (error) {
-      console.error("Erro ao atualizar produto:", error);
-    }
+    await fetch(`/api/admin/products/${id}/status`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    fetchProducts();
   };
 
   const getStatusColor = (status?: string) => {
@@ -129,11 +117,13 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text">
+    <div className="p-4 sm:p-6 space-y-6">
+      {/* HEADER */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <h1 className="text-xl sm:text-2xl font-bold text-text">
           {isAdmin ? "Gerenciar Marketplace" : "Meus Produtos"}
         </h1>
+
         {!isAdmin && companyApproved && (
           <button
             onClick={() => {
@@ -148,193 +138,243 @@ export default function ProductsPage() {
         )}
       </div>
 
+      {/* FILTRO */}
       {isAdmin && (
-        <div className="flex gap-2 p-1 bg-surface-strong rounded-xl w-fit border border-border">
+        <div className="flex flex-wrap gap-2 p-1 bg-surface-strong rounded-xl border border-border w-fit">
           {["ALL", "PENDING", "APPROVED", "REJECTED"].map((s) => (
             <button
               key={s}
               onClick={() => setFilter(s as any)}
-              className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all ${
                 filter === s
-                  ? "bg-primary text-white shadow-sm"
+                  ? "bg-primary text-white"
                   : "text-text-muted hover:text-text"
               }`}
             >
               {s === "ALL"
                 ? "Todos"
                 : s === "PENDING"
-                  ? "Pendentes"
-                  : s === "APPROVED"
-                    ? "Aprovados"
-                    : "Rejeitados"}
+                ? "Pendentes"
+                : s === "APPROVED"
+                ? "Aprovados"
+                : "Rejeitados"}
             </button>
           ))}
         </div>
       )}
 
       {showForm && (
-        <div className="mb-8">
-          <ProductForm
-            productId={editingProduct?.id}
-            initialData={
-              editingProduct
-                ? {
-                    ...editingProduct,
-                    stock: editingProduct.stock || 0, // Garante que o stock passe como número
-                  }
-                : undefined
-            }
-            onSuccess={() => {
-              setShowForm(false);
-              setEditingProduct(null);
-              fetchProducts();
-            }}
-            onCancel={() => {
-              setShowForm(false);
-              setEditingProduct(null);
-            }}
-          />
-        </div>
+        <ProductForm
+          productId={editingProduct?.id}
+          initialData={editingProduct ?? undefined}
+          onSuccess={() => {
+            setShowForm(false);
+            setEditingProduct(null);
+            fetchProducts();
+          }}
+          onCancel={() => {
+            setShowForm(false);
+            setEditingProduct(null);
+          }}
+        />
       )}
 
-      <div className="overflow-hidden rounded-2xl border border-border bg-surface-strong">
-        {products.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-4 p-12 text-center">
-            <div className="rounded-full bg-primary/10 p-4 text-primary">
-              <HiPlus className="h-8 w-8" />
-            </div>
-            <h2 className="text-lg font-bold text-text">
-              Nenhum produto encontrado
-            </h2>
-            {!isAdmin && (
-              <button
-                onClick={() => {
-                  setEditingProduct(null);
-                  setShowForm(true);
-                }}
-                className="rounded-xl bg-primary px-6 py-2 text-white font-bold"
+      {/* LISTAGEM */}
+      {products.length === 0 ? (
+        <div className="p-10 text-center text-text-muted">
+          Nenhum produto encontrado.
+        </div>
+      ) : (
+        <>
+          {/* MOBILE CARDS */}
+          <div className="grid sm:hidden gap-3">
+            {products.map((p) => (
+              <div
+                key={p.id}
+                className="rounded-xl border border-border bg-surface-strong p-3 flex gap-3"
               >
-                Criar primeiro produto
-              </button>
-            )}
+                <div className="relative w-20 h-20 border border-border rounded-lg overflow-hidden bg-white shrink-0">
+                  <Image
+                    src={p.images[0]?.url || "/placeholder.png"}
+                    alt={p.name}
+                    fill
+                    className="object-contain p-1"
+                  />
+                </div>
+
+                <div className="flex flex-col justify-between w-full">
+                  <p className="font-semibold">{p.name}</p>
+                  <p className="text-xs text-text-muted">{p.category}</p>
+
+                  <div className="flex justify-between text-xs">
+                    <span
+                      className={`${
+                        p.stock <= 5 && "text-red-500 font-bold"
+                      }`}
+                    >
+                      {p.stock} un.
+                    </span>
+                    <span className="font-bold">
+                      R$ {p.price.toFixed(2)}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-2">
+                    {!isAdmin ? (
+                      <>
+                        <button
+                          onClick={() => {
+                            setEditingProduct(p);
+                            setShowForm(true);
+                          }}
+                          className="p-2 rounded-lg bg-primary/10 text-primary"
+                        >
+                          <HiPencil />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(p.id)}
+                          className="p-2 rounded-lg bg-red-500/10 text-red-600"
+                        >
+                          <HiTrash />
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        {p.status === "PENDING" && (
+                          <>
+                            <button
+                              onClick={() =>
+                                updateProductStatus(p.id, "APPROVED")
+                              }
+                              className="p-2 rounded-lg bg-green-500/10 text-green-600"
+                            >
+                              <AiOutlineCheck />
+                            </button>
+                            <button
+                              onClick={() =>
+                                updateProductStatus(p.id, "REJECTED")
+                              }
+                              className="p-2 rounded-lg bg-red-500/10 text-red-600"
+                            >
+                              <AiOutlineClose />
+                            </button>
+                          </>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-surface text-text-muted border-b border-border">
+
+          {/* DESKTOP TABLE */}
+          <div className="hidden sm:block overflow-x-auto rounded-2xl border border-border">
+            <table className="min-w-175 w-full text-sm">
+              <thead className="bg-surface border-b border-border">
                 <tr>
-                  <th className="px-6 py-4 text-left font-bold uppercase tracking-wider">
-                    Produto
-                  </th>
-                  <th className="px-4 py-4 text-left font-bold uppercase tracking-wider">
-                    Estoque
-                  </th>
-                  <th className="px-4 py-4 text-left font-bold uppercase tracking-wider">
-                    Preço
-                  </th>
+                  <th className="px-6 py-4 text-left font-bold">Produto</th>
+                  <th className="px-4 py-4 text-left font-bold">Estoque</th>
+                  <th className="px-4 py-4 text-left font-bold">Preço</th>
                   {isAdmin && (
-                    <th className="px-4 py-4 text-left font-bold uppercase tracking-wider">
-                      Status
-                    </th>
+                    <th className="px-4 py-4 text-left font-bold">Status</th>
                   )}
-                  <th className="px-6 py-4 text-right font-bold uppercase tracking-wider">
-                    Ações
-                  </th>
+                  <th className="px-6 py-4 text-right font-bold">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border bg-surface-strong">
-                {products.map((product) => (
+              <tbody className="divide-y divide-border">
+                {products.map((p) => (
                   <tr
-                    key={product.id}
+                    key={p.id}
                     className="hover:bg-surface/50 transition-colors"
                   >
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-4">
-                        <div className="relative h-12 w-12 overflow-hidden rounded-lg border border-border bg-white">
+                      <div className="flex items-center gap-3">
+                        <div className="relative h-12 w-12 border border-border rounded-lg bg-white overflow-hidden">
                           <Image
-                            src={product.images[0]?.url || "/placeholder.png"}
-                            alt={product.name}
+                            src={p.images[0]?.url || "/placeholder.png"}
+                            alt={p.name}
                             fill
                             className="object-contain p-1"
                           />
                         </div>
                         <div>
-                          <p className="font-bold text-text">{product.name}</p>
-                          <p className="text-xs text-text-muted">
-                            {product.category}
-                          </p>
+                          <p className="font-bold">{p.name}</p>
+                          <p className="text-xs text-text-muted">{p.category}</p>
                         </div>
                       </div>
                     </td>
+
                     <td className="px-4 py-4">
                       <span
-                        className={`font-medium ${product.stock <= 5 ? "text-red-500 font-bold" : "text-text"}`}
+                        className={`${p.stock <= 5 ? "text-red-500 font-bold" : ""}`}
                       >
-                        {product.stock} un.
+                        {p.stock} un.
                       </span>
                     </td>
-                    <td className="px-4 py-4 font-bold text-text">
-                      R${" "}
-                      {product.price.toLocaleString("pt-BR", {
-                        minimumFractionDigits: 2,
-                      })}
+
+                    <td className="px-4 py-4 font-bold">
+                      R$ {p.price.toFixed(2)}
                     </td>
+
                     {isAdmin && (
                       <td className="px-4 py-4">
                         <span
-                          className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${getStatusColor(product.status)}`}
+                          className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase ${getStatusColor(
+                            p.status
+                          )}`}
                         >
-                          {product.status === "PENDING"
+                          {p.status === "PENDING"
                             ? "Pendente"
-                            : product.status === "APPROVED"
-                              ? "Aprovado"
-                              : "Rejeitado"}
+                            : p.status === "APPROVED"
+                            ? "Aprovado"
+                            : "Rejeitado"}
                         </span>
                       </td>
                     )}
+
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
-                        {isAdmin ? (
+                        {!isAdmin ? (
                           <>
-                            {product.status === "PENDING" && (
+                            <button
+                              onClick={() => {
+                                setEditingProduct(p);
+                                setShowForm(true);
+                              }}
+                              className="p-2 rounded-lg bg-primary/10 text-primary"
+                            >
+                              <HiPencil />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(p.id)}
+                              className="p-2 rounded-lg bg-red-500/10 text-red-600"
+                            >
+                              <HiTrash />
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            {p.status === "PENDING" && (
                               <>
                                 <button
                                   onClick={() =>
-                                    updateProductStatus(product.id, "APPROVED")
+                                    updateProductStatus(p.id, "APPROVED")
                                   }
-                                  className="p-2 rounded-lg bg-green-500/10 text-green-600 hover:bg-green-500 hover:text-white transition-all"
+                                  className="p-2 rounded-lg bg-green-500/10 text-green-600"
                                 >
                                   <AiOutlineCheck />
                                 </button>
                                 <button
                                   onClick={() =>
-                                    updateProductStatus(product.id, "REJECTED")
+                                    updateProductStatus(p.id, "REJECTED")
                                   }
-                                  className="p-2 rounded-lg bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white transition-all"
+                                  className="p-2 rounded-lg bg-red-500/10 text-red-600"
                                 >
                                   <AiOutlineClose />
                                 </button>
                               </>
                             )}
-                          </>
-                        ) : (
-                          <>
-                            <button
-                              onClick={() => {
-                                setEditingProduct(product);
-                                setShowForm(true);
-                                window.scrollTo({ top: 0, behavior: "smooth" });
-                              }}
-                              className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all"
-                            >
-                              <HiPencil />
-                            </button>
-                            <button
-                              onClick={() => handleDelete(product.id)}
-                              className="p-2 rounded-lg bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white transition-all"
-                            >
-                              <HiTrash />
-                            </button>
                           </>
                         )}
                       </div>
@@ -344,8 +384,8 @@ export default function ProductsPage() {
               </tbody>
             </table>
           </div>
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 }

@@ -40,13 +40,9 @@ export default function AboutSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.8}}
+          transition={{ delay: 0.4, duration: 0.8 }}
           className="mt-10 flex justify-center"
-        >
-          <h3 className="text-3xl font-bold text-text border-primary pb-2">
-            Quem <span className="text-primary">somos</span>
-          </h3>
-        </motion.div>
+        ></motion.div>
 
         {/* Conteúdo principal */}
         <div className="mt-4 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 items-center">
@@ -68,9 +64,7 @@ export default function AboutSection() {
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 text-white">
-              <p className="text-sm font-medium opacity-90">
-                
-              </p>
+              <p className="text-sm font-medium opacity-90"></p>
             </div>
           </motion.div>
 
@@ -100,9 +94,14 @@ export default function AboutSection() {
               transition={{ duration: 0.7 }}
             >
               <p className="mt-4 text-text-muted leading-relaxed text-justify">
-                Fundada em 20 de setembro de 2007, em Salinópolis-PA, a <span className="font-semibold text-primary">
-                Amazônia Marketing
-              </span> nasceu com a missão de criar informações inteligentes que impulsionam o desenvolvimento regional. Especializada em consultoria de gestão empresarial, transformamos conhecimento em soluções práticas para quem vive e produz na Amazônia.
+                Fundada em 20 de setembro de 2007, em Salinópolis-PA, a{" "}
+                <span className="font-semibold text-primary">
+                  Amazônia Marketing
+                </span>{" "}
+                nasceu com a missão de criar informações inteligentes que
+                impulsionam o desenvolvimento regional. Especializada em
+                consultoria de gestão empresarial, transformamos conhecimento em
+                soluções práticas para quem vive e produz na Amazônia.
               </p>
             </motion.div>
 
@@ -165,10 +164,11 @@ export default function AboutSection() {
               className="text-text-muted leading-relaxed text-justify"
             >
               Nossa prioridade é o crescimento em{" "}
-              <span className="font-semibold text-primary">
-                excelência
-              </span>
-              , alinhados aos objetivos de cada parceiro. Aceitamos desafios baseados no compromisso real com o desenvolvimento regional, garantindo que cada conexão gerada entregue valor direto ao produtor e à empresa.
+              <span className="font-semibold text-primary">excelência</span>,
+              alinhados aos objetivos de cada parceiro. Aceitamos desafios
+              baseados no compromisso real com o desenvolvimento regional,
+              garantindo que cada conexão gerada entregue valor direto ao
+              produtor e à empresa.
             </motion.p>
 
             {/* CTA */}
@@ -181,13 +181,12 @@ export default function AboutSection() {
               className="pt-4 flex justify-center"
             >
               <a
-                href="/contato"
+                href="https://wa.me/5500000000000?text=Olá!%20Gostaria%20de%20falar%20com%20um%20consultor%20sobre%20as%20soluções%20de%20gestão%20da%20Amazônia%20Marketing" target="_blank"
                 className="inline-flex items-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-primary/90 hover:shadow-md"
               >
                 Falar com um Consultor →
               </a>
             </motion.div>
-            
           </motion.div>
         </div>
       </div>

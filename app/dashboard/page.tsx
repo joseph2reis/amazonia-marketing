@@ -106,7 +106,7 @@ export default function DashboardPage() {
     <section className="bg-surface px-6 py-8 min-h-screen">
       <div className="max-w-7xl mx-auto">
         <header className="mb-10">
-          <h1 className="text-3xl font-black text-text tracking-tight">
+          <h1 className="text-3xl font-bold text-text tracking-tight">
             Dashboard{" "}
             <span className="text-primary">
               {isAdmin ? "Admin" : "Lojista"}
@@ -132,10 +132,10 @@ export default function DashboardPage() {
                   <Icon size={20} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-text-muted uppercase tracking-widest">
+                  <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
                     {item.title}
                   </p>
-                  <p className="text-2xl font-black text-text leading-none mt-1">
+                  <p className="text-2xl font-bold text-text leading-none mt-1">
                     {item.value}
                   </p>
                 </div>
@@ -148,7 +148,7 @@ export default function DashboardPage() {
         <div className="mt-16">
           <div className="flex items-center gap-4 mb-8">
             <div className="h-8 w-1.5 bg-primary rounded-full" />
-            <h2 className="text-xl font-black text-text uppercase tracking-wider">
+            <h2 className="text-xl font-bold text-text uppercase tracking-wider">
               Navegação Rápida
             </h2>
           </div>
@@ -222,7 +222,7 @@ function QuickActionLink({
         <FaArrowRight className="text-text-muted opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all" />
       </div>
       <div>
-        <h3 className="font-black text-text group-hover:text-primary transition-colors">
+        <h3 className="font-bold text-text group-hover:text-primary transition-colors">
           {title}
         </h3>
         <p className="text-xs text-text-muted mt-1">{desc}</p>

@@ -113,7 +113,7 @@ export default function RegisterPage() {
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold text-text">Criar conta</h1>
           <p className="mt-2 text-sm text-text-muted">
-            Junte-se à AgroAmazônia 🌱
+            Junte-se à Amazônia Marketing 🌱
           </p>
         </div>
 

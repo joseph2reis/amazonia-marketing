@@ -35,7 +35,7 @@ export default function ProductDetails({ product }: Props) {
   const isOutOfStock = product.stock <= 0;
 
   // Formata o link do WhatsApp
-  const whatsappUrl = `https://wa.me/55${product.company.cel.replace(/\D/g, "")}?text=Olá! Vi o produto ${product.name} na AgroAmazônia e gostaria de mais informações.`;
+  const whatsappUrl = `https://wa.me/55${product.company.cel.replace(/\D/g, "")}?text=Olá! Vi o produto ${product.name} na Amazônia Marketing e gostaria de mais informações.`;
 
   // 1. Remove tudo que não for número
   const rawPhone = product.company?.phone?.replace(/\D/g, "") ?? "";
@@ -55,7 +55,7 @@ export default function ProductDetails({ product }: Props) {
       <div className="mx-auto max-w-7xl px-6">
         <button
           onClick={() => router.back()}
-          className="group mb-8 inline-flex items-center gap-2 text-sm font-bold text-text-muted hover:text-primary transition-colors"
+          className="group mb-8 inline-flex items-center gap-2 text-sm font-bold text-text-muted hover:text-primary transition-colors cursor-pointer"
         >
           <HiArrowLeft className="transition-transform group-hover:-translate-x-1" />
           Voltar para a loja
@@ -94,8 +94,8 @@ export default function ProductDetails({ product }: Props) {
                 priority
               />
               {isOutOfStock && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
-                  <span className="rounded-full bg-white px-6 py-2 text-sm font-black uppercase tracking-widest text-black">
+                <div className="absolute inset-0 flex items-center justify-center bg-bold/40 backdrop-blur-[2px]">
+                  <span className="rounded-full bg-white px-6 py-2 text-sm font-bold uppercase tracking-widest text-bold">
                     Esgotado
                   </span>
                 </div>
@@ -106,7 +106,7 @@ export default function ProductDetails({ product }: Props) {
           {/* Conteúdo */}
           <div className="flex flex-col">
             <div className="flex items-center gap-3">
-              <span className="rounded-full bg-primary/10 px-4 py-1.5 text-[10px] font-black uppercase tracking-widest text-primary">
+              <span className="rounded-full bg-primary/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary">
                 {product.category}
               </span>
               <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
@@ -115,7 +115,7 @@ export default function ProductDetails({ product }: Props) {
               </span>
             </div>
 
-            <h1 className="mt-4 text-4xl font-black text-text sm:text-5xl tracking-tight">
+            <h1 className="mt-4 text-4xl font-bold text-text sm:text-5xl tracking-tight">
               {product.name}
             </h1>
 
@@ -131,7 +131,7 @@ export default function ProductDetails({ product }: Props) {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-text">
                   <HiOutlineShieldCheck className="text-primary text-xl" />
-                  <span>Compra segura com verificação AgroAmazonia</span>
+                  <span>Compra segura com verificação Amazônia Marketing</span>
                 </div>
               </div>
             </div>
@@ -142,7 +142,7 @@ export default function ProductDetails({ product }: Props) {
                 <span className="text-sm font-bold text-text-muted">
                   Valor do investimento
                 </span>
-                <span className="text-4xl font-black text-primary">
+                <span className="text-4xl font-bold text-primary">
                   {product.price.toLocaleString("pt-BR", {
                     style: "currency",
                     currency: "BRL",
@@ -156,7 +156,7 @@ export default function ProductDetails({ product }: Props) {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-3 rounded-2xl bg-[#25D366] px-8 py-4 text-sm font-black uppercase tracking-widest text-white transition-all shadow-lg hover:bg-[#20ba5a] active:scale-95"
+                  className="flex items-center justify-center gap-3 rounded-2xl bg-[#25D366] px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-all shadow-lg hover:bg-[#20ba5a] active:scale-95"
                 >
                   <FaWhatsapp size={20} />
                   WhatsApp
@@ -164,7 +164,7 @@ export default function ProductDetails({ product }: Props) {
 
                 <a
                   href={finalPhoneLink}
-                  className="flex items-center justify-center gap-3 rounded-2xl bg-surface-strong border border-border px-8 py-4 text-sm font-black uppercase tracking-widest text-text transition-all shadow-sm hover:bg-border active:scale-95"
+                  className="flex items-center justify-center gap-3 rounded-2xl bg-surface-strong border border-border px-8 py-4 text-sm font-bold uppercase tracking-widest text-text transition-all shadow-sm hover:bg-border active:scale-95"
                 >
                   <HiOutlinePhone size={20} className="text-primary" />
                   Ligar Agora
@@ -181,8 +181,8 @@ export default function ProductDetails({ product }: Props) {
             <footer className="mt-10 rounded-2xl bg-surface-strong p-6 border border-border">
               <p className="text-xs font-medium text-text-muted leading-relaxed">
                 🌱 <strong className="text-text">Negociação Direta:</strong> A
-                AgroAmazônia facilita o contato entre você e o produtor. Toda a
-                logística e pagamento são combinados diretamente com a{" "}
+                Amazônia Marketing facilita o contato entre você e o produtor.
+                Toda a logística e pagamento são combinados diretamente com a{" "}
                 <span className="text-primary font-bold">
                   {product.company.name}
                 </span>

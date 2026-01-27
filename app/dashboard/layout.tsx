@@ -23,7 +23,7 @@ export default async function DashboardLayout({
   // Se for admin, permite acesso mesmo sem empresa
   if (session.user.role === "ADMIN") {
     return (
-      <div className="flex min-h-screen bg-surface">
+      <div className="flex h-screen bg-surface">
         {/* Passamos a sessão para a Sidebar se ela precisar mostrar nome/email */}
         <Sidebar user={session.user} />
 

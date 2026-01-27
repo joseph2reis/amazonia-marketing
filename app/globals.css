@@ -55,7 +55,3 @@ body {
   background-color: var(--color-surface);
   color: var(--color-text);
 }
-
-.flex-center {
-  @apply flex flex-col items-center text-center;
-}

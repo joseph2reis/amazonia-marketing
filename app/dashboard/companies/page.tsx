@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { AiOutlineLoading3Quarters, AiOutlineCheck, AiOutlineShop, AiOutlineCloseCircle } from "react-icons/ai";
+import {
+  AiOutlineLoading3Quarters,
+  AiOutlineCheck,
+  AiOutlineShop,
+  AiOutlineCloseCircle,
+} from "react-icons/ai";
 
 type Company = {
   id: string;
@@ -27,7 +32,6 @@ export default function CompaniesPage() {
   const fetchCompanies = async () => {
     setLoading(true);
     try {
-      // ATENÇÃO: Verifique se este endpoint retorna TODAS as empresas (aprovadas e não aprovadas)
       const res = await fetch("/api/admin/companies");
       if (res.ok) {
         const data = await res.json();
@@ -42,24 +46,24 @@ export default function CompaniesPage() {
 
   const updateStatus = async (id: string, approve: boolean) => {
     try {
-      const endpoint = approve 
-        ? `/api/admin/companies/${id}/approve` 
-        : `/api/admin/companies/${id}/reject`; // Caso tenha essa rota
-        
+      const endpoint = approve
+        ? `/api/admin/companies/${id}/approve`
+        : `/api/admin/companies/${id}/reject`;
+
       const res = await fetch(endpoint, { method: "POST" });
-      
+
       if (res.ok) {
-        // Atualiza o estado local sem precisar recarregar a página toda
-        setCompanies(prev => prev.map(c => c.id === id ? { ...c, approved: approve } : c));
+        setCompanies((prev) =>
+          prev.map((c) => (c.id === id ? { ...c, approved: approve } : c)),
+        );
       }
     } catch (error) {
       console.error("Erro ao atualizar status:", error);
     }
   };
 
-  // Filtros baseados na aba
-  const pendingCompanies = companies.filter(c => !c.approved);
-  const activeCompanies = companies.filter(c => c.approved);
+  const pendingCompanies = companies.filter((c) => !c.approved);
+  const activeCompanies = companies.filter((c) => c.approved);
   const displayList = activeTab === "PENDING" ? pendingCompanies : activeCompanies;
 
   if (loading) {
@@ -71,10 +75,12 @@ export default function CompaniesPage() {
   }
 
   return (
-    <section className="p-6 bg-surface min-h-screen">
-      <header className="mb-8">
+    <section className="p-6 bg-surface">
+      <header className="mb-8 flex flex-col gap-1">
         <h1 className="text-2xl font-bold text-text">Gerenciamento de Parceiros</h1>
-        <p className="text-text-muted">Aprove novas empresas ou gerencie as já ativas no marketplace.</p>
+        <p className="text-text-muted text-sm">
+          Aprove novas empresas ou gerencie as ativas no marketplace.
+        </p>
       </header>
 
       {/* Tabs */}
@@ -91,7 +97,9 @@ export default function CompaniesPage() {
               {pendingCompanies.length}
             </span>
           )}
-          {activeTab === "PENDING" && <div className="absolute bottom-0 left-0 w-full h-1 bg-primary rounded-t-full" />}
+          {activeTab === "PENDING" && (
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-primary rounded-t-full" />
+          )}
         </button>
 
         <button
@@ -104,12 +112,14 @@ export default function CompaniesPage() {
           <span className="ml-2 bg-gray-200 text-gray-600 text-[10px] px-2 py-0.5 rounded-full">
             {activeCompanies.length}
           </span>
-          {activeTab === "ACTIVE" && <div className="absolute bottom-0 left-0 w-full h-1 bg-primary rounded-t-full" />}
+          {activeTab === "ACTIVE" && (
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-primary rounded-t-full" />
+          )}
         </button>
       </div>
 
-      {/* Tabela */}
-      <div className="bg-surface-strong rounded-2xl border border-border overflow-hidden shadow-sm">
+      {/* ========== DESKTOP TABLE ========== */}
+      <div className="hidden md:block bg-surface-strong rounded-2xl border border-border shadow-sm overflow-hidden">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-surface/50 text-text-muted text-xs uppercase font-bold">
@@ -136,7 +146,9 @@ export default function CompaniesPage() {
                 <td className="px-6 py-4 text-sm text-text">{company.cnpj}</td>
                 <td className="px-6 py-4">
                   <p className="text-sm text-text">{company.phone}</p>
-                  <p className="text-[10px] font-bold text-primary uppercase">Zap: {company.whatssap}</p>
+                  <p className="text-[10px] font-bold text-primary uppercase">
+                    Zap: {company.whatssap}
+                  </p>
                 </td>
                 <td className="px-6 py-4 text-right">
                   {activeTab === "PENDING" ? (
@@ -163,6 +175,55 @@ export default function CompaniesPage() {
         {displayList.length === 0 && (
           <div className="p-12 text-center text-text-muted italic">
             Nenhuma empresa encontrada nesta categoria.
+          </div>
+        )}
+      </div>
+
+      {/* ========== MOBILE CARDS ========== */}
+      <div className="block md:hidden space-y-3">
+        {displayList.map((company) => (
+          <div
+            key={company.id}
+            className="bg-surface-strong rounded-2xl border border-border p-3 flex gap-3"
+          >
+            <div className="p-2 bg-primary/10 text-primary rounded-lg h-fit">
+              <AiOutlineShop size={20} />
+            </div>
+
+            <div className="flex flex-col gap-1 w-full">
+              <p className="font-bold text-text text-sm">{company.name}</p>
+              <p className="text-[11px] text-text-muted">{company.user.email}</p>
+              <p className="text-[11px] text-text">CNPJ: {company.cnpj}</p>
+
+              <div className="text-[11px] text-text flex flex-col">
+                <span>Fone: {company.phone}</span>
+                <span className="text-primary font-bold uppercase">Zap: {company.whatssap}</span>
+              </div>
+
+              <div className="pt-2">
+                {activeTab === "PENDING" ? (
+                  <button
+                    onClick={() => updateStatus(company.id, true)}
+                    className="w-full inline-flex items-center justify-center gap-2 bg-primary text-white px-3 py-2 rounded-xl text-[12px] font-bold"
+                  >
+                    <AiOutlineCheck size={16} /> Aprovar
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => updateStatus(company.id, false)}
+                    className="w-full inline-flex items-center justify-center gap-2 border border-red-300 text-red-600 px-3 py-2 rounded-xl text-[12px] font-bold"
+                  >
+                    <AiOutlineCloseCircle size={16} /> Desativar
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {displayList.length === 0 && (
+          <div className="p-8 text-center text-text-muted italic text-xs">
+            Nenhuma empresa nesta categoria.
           </div>
         )}
       </div>

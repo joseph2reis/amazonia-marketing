@@ -53,7 +53,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md rounded-3xl border border-border bg-surface-strong p-8 shadow-md">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold text-text">
-            Entrar na AgroAmazônia
+            Entrar na Amazônia Marketing
           </h1>
           <p className="mt-2 text-sm text-text-muted">
             Acesse sua conta para continuar

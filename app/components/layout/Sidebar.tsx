@@ -12,8 +12,8 @@ import {
   HiChevronLeft,
   HiChevronRight,
 } from "react-icons/hi";
+import { CiGlobe, CiBoxes } from "react-icons/ci";
 import { useTheme } from "next-themes";
-import { FaBoxes } from "react-icons/fa";
 
 interface SidebarProps {
   user: {
@@ -32,7 +32,7 @@ export default function Sidebar({ user }: SidebarProps) {
 
   const menuItems = [
     { name: "Início", href: "/dashboard", icon: HiOutlineHome },
-    { name: "Produtos", href: "/dashboard/products", icon: FaBoxes },
+    { name: "Produtos", href: "/dashboard/products", icon: CiBoxes },
     {
       name: "Relatórios",
       href: "/dashboard/reports",
@@ -54,6 +54,8 @@ export default function Sidebar({ user }: SidebarProps) {
           },
         ]
       : []),
+
+    { name: "Ir para o site", href: "/", icon: CiGlobe },
   ];
 
   useEffect(() => {
@@ -88,7 +90,9 @@ export default function Sidebar({ user }: SidebarProps) {
         {/* Logo + Toggle */}
         <div className="p-4 flex items-center justify-between">
           {!collapsed && (
-            <span className="font-bold text-lg text-primary">AgroAmazônia</span>
+            <span className="font-bold text-lg text-primary">
+              Amazônia Marketing
+            </span>
           )}
 
           <button

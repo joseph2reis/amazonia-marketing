@@ -17,7 +17,7 @@ const testimonials = [
         company: "Cooperativa Verde Vale",
         location: "Tomé-Açu, PA",
         avatar: "/depoimentos/empresa1.png",
-        text: "A AgroAmazonia nos ajudou a eliminar os atravessadores. Hoje vendemos nossa pimenta-do-reino diretamente para indústrias do sul com preço justo.",
+        text: "A Amazônia Marketing nos ajudou a eliminar os atravessadores. Hoje vendemos nossa pimenta-do-reino diretamente para indústrias do sul com preço justo.",
     },
     {
         id: 2,

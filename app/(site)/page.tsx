@@ -10,9 +10,9 @@ export default async function Home() {
   return (
     <>
       <AgroHeroWithStats />
-      <AgroBenefits />
-      {/* <AgroCategories /> */}
       <AgroProductsCarousel products={products} />
+      {/* <AgroCategories /> */}
+      <AgroBenefits />
       <AboutSection />
     </>
   );

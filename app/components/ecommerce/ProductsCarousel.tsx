@@ -54,7 +54,7 @@ export default function AgroProductsCarousel({ products = [] }: Props) {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="mb-8 flex items-center justify-between"
         >
-          <h2 className="text-3xl font-black text-text tracking-tight uppercase">
+          <h2 className="text-3xl font-bold text-text -tracking-tight">
             Marketplace
           </h2>
 
@@ -96,13 +96,13 @@ export default function AgroProductsCarousel({ products = [] }: Props) {
                     href={`/produto/${product.slug}`} // Rota pública
                     footer={
                       <div className="flex w-full items-center justify-between">
-                        <span className="text-lg font-black text-primary">
+                        <span className="text-lg font-bold text-primary">
                           {product.price.toLocaleString("pt-BR", {
                             style: "currency",
                             currency: "BRL",
                           })}
                         </span>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
                           Comprar →
                         </span>
                       </div>

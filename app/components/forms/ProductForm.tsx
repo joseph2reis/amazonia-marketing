@@ -109,228 +109,145 @@ export default function ProductForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-border bg-surface-strong p-4 sm:p-6 space-y-4 shadow-md"
+      className="
+    rounded-2xl border border-border bg-surface-strong 
+    p-3 sm:p-6 
+    space-y-4 
+    shadow-md 
+    w-full
+  "
     >
-      <h2 className="text-xl font-bold text-text">
+      <h2 className="text-lg sm:text-xl font-bold text-text">
         {productId ? "Editar produto" : "Cadastrar Novo Produto"}
       </h2>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="md:col-span-1">
-          <label className="text-sm font-bold text-text">Nome do Produto</label>
+      <div className="grid gap-3 sm:gap-4 md:grid-cols-2">
+        <div>
+          <label className="text-xs sm:text-sm font-bold text-text">
+            Nome do Produto
+          </label>
           <input
             value={name}
             onChange={(e) => handleNameChange(e.target.value)}
             placeholder="Ex: Seu Produto"
             required
-            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text outline-none focus:ring-2 focus:ring-primary"
+            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text text-sm outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
         <div>
-          <label className="text-sm font-bold text-text">Slug (URL)</label>
+          <label className="text-xs sm:text-sm font-bold text-text">
+            Slug (URL)
+          </label>
           <input
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
             placeholder="ex-seu-produto"
             required
-            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text outline-none focus:ring-2 focus:ring-primary"
+            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text text-sm outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
         <div className="md:col-span-2">
-          <label className="text-sm font-bold text-text">
+          <label className="text-xs sm:text-sm font-bold text-text">
             Descrição Detalhada
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            rows={3}
-            placeholder="Descreva as características técnicas e benefícios do produto..."
-            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text outline-none focus:ring-2 focus:ring-primary"
+            rows={4}
+            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text text-sm outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
         <div>
-          <label className="text-sm font-bold text-text">Preço (R$)</label>
+          <label className="text-xs sm:text-sm font-bold text-text">
+            Preço (R$)
+          </label>
           <input
             type="number"
             step="0.01"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            placeholder="0.00"
             required
-            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text outline-none focus:ring-2 focus:ring-primary"
+            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text text-sm outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
-        {/* CAMPO DE ESTOQUE ADICIONADO */}
         <div>
-          <label className="text-sm font-bold text-text">
+          <label className="text-xs sm:text-sm font-bold text-text">
             Quantidade em Estoque
           </label>
           <input
             type="number"
+            min="0"
             value={stock}
             onChange={(e) => setStock(e.target.value)}
-            placeholder="Ex: 50"
             required
-            min="0"
-            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text outline-none focus:ring-2 focus:ring-primary"
+            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text text-sm outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
         <div className="md:col-span-2">
-          <label className="text-sm font-bold text-text">Categoria</label>
+          <label className="text-xs sm:text-sm font-bold text-text">
+            Categoria
+          </label>
           <input
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            placeholder="Ex: Separado, Por, Virgulas"
             required
-            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text outline-none focus:ring-2 focus:ring-primary"
+            placeholder="Ex: Eletronicos, Ferramentas..."
+            className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text text-sm outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       </div>
 
-      {/* SEÇÃO DE IMAGENS */}
-      <div className="space-y-3 pt-2">
-        <label className="text-sm font-bold text-text flex items-center gap-2">
-          <HiPaperClip className="text-primary" />
-          Imagens do Produto
+      {/* Imagens */}
+      <div className="space-y-2 pt-1">
+        <label className="text-xs sm:text-sm font-bold flex items-center gap-2 text-text">
+          <HiPaperClip className="text-primary" /> Imagens do Produto
         </label>
 
         <input
           type="file"
           accept="image/*"
           multiple
-          disabled={uploading}
-          onChange={async (e) => {
-            const files = Array.from(e.target.files ?? []);
-            if (!files.length) return;
-
-            setUploadError(null);
-            const MAX_SIZE = 1 * 1024 * 1024; // 1MB
-
-            const oversized = files.filter((f) => f.size > MAX_SIZE);
-            if (oversized.length) {
-              setUploadError(
-                `Arquivos excedem 1MB: ${oversized.map((f) => f.name).join(", ")}`,
-              );
-              e.target.value = "";
-              return;
-            }
-
-            setUploading(true);
-            setUploadProgress(0);
-            const uploaded: string[] = [];
-
-            for (let i = 0; i < files.length; i++) {
-              const formData = new FormData();
-              formData.append("file", files[i]);
-              try {
-                const res = await fetch("/api/upload", {
-                  method: "POST",
-                  body: formData,
-                });
-                const data = await res.json();
-                if (res.ok) uploaded.push(data.url);
-              } catch (err) {
-                console.error("Erro upload", err);
-              }
-              setUploadProgress(Math.round(((i + 1) / files.length) * 100));
-            }
-
-            setImages((prev) => {
-              const merged = [...prev, ...uploaded];
-              setMainImage((old) => old ?? merged[0]);
-              return merged;
-            });
-            setUploading(false);
-          }}
           className="w-full text-sm text-text-muted border border-border rounded-lg cursor-pointer bg-surface
-          file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0
-          file:text-sm file:font-semibold file:bg-primary file:text-white
-          hover:file:opacity-90 disabled:opacity-50"
+      file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0
+      file:text-xs file:font-semibold file:bg-primary file:text-white"
         />
 
-        {uploadError && (
-          <div className="text-xs text-red-500 font-medium">
-            ⚠ {uploadError}
-          </div>
-        )}
-
-        {uploading && (
-          <div className="space-y-1">
-            <div className="h-2 w-full rounded-full bg-surface border border-border overflow-hidden">
-              <div
-                className="h-full bg-primary transition-all duration-300"
-                style={{ width: `${uploadProgress}%` }}
-              />
-            </div>
-            <p className="text-[10px] text-text-muted uppercase font-bold tracking-wider">
-              Enviando: {uploadProgress}%
-            </p>
-          </div>
-        )}
-
         {images.length > 0 && (
-          <div className="flex gap-3 overflow-x-auto pb-4 pt-2">
+          <div className="flex gap-2 overflow-x-auto pb-3 pt-1">
             {images.map((url) => (
               <div
                 key={url}
-                onClick={() => setMainImage(url)}
-                className={`relative w-24 h-24 shrink-0 rounded-xl border-2 transition-all p-1 bg-white cursor-pointer ${
-                  mainImage === url
-                    ? "border-primary shadow-lg"
-                    : "border-border hover:border-text-muted"
-                }`}
+                className="relative w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-lg border border-border bg-white p-1"
               >
                 <img
                   src={url}
-                  alt="Produto"
-                  className="h-full w-full object-contain rounded-lg"
+                  className="w-full h-full rounded object-contain"
                 />
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setImages((prev) => prev.filter((img) => img !== url));
-                    if (mainImage === url) setMainImage(null);
-                  }}
-                  className="absolute -top-2 -right-2 rounded-full bg-red-500 text-white w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 shadow-md"
-                >
-                  ✕
-                </button>
-                {mainImage === url && (
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary text-white text-[8px] px-2 py-0.5 rounded-full font-bold whitespace-nowrap">
-                    CAPA
-                  </div>
-                )}
               </div>
             ))}
           </div>
         )}
       </div>
 
-      <div className="flex gap-3 pt-6">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-4">
         <button
           type="button"
           onClick={onCancel}
-          className="flex-1 rounded-xl border border-border px-4 py-3 text-text font-bold hover:bg-surface transition-colors"
+          className="flex-1 rounded-lg border border-border px-4 py-2 text-sm font-bold text-text"
         >
           Descartar
         </button>
 
         <button
           type="submit"
-          disabled={saving || uploading}
-          className="flex-1 rounded-xl bg-primary px-4 py-3 text-white font-bold hover:opacity-90 transition-opacity disabled:opacity-50"
+          className="flex-1 rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white"
         >
-          {saving
-            ? "Salvando Alterações..."
-            : productId
-              ? "Atualizar Produto"
-              : "Publicar Produto"}
+          {productId ? "Atualizar Produto" : "Publicar Produto"}
         </button>
       </div>
     </form>
