@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "create-admin": "tsx scripts/create-admin.ts",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prisma": "prisma generate",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@libsql/client": "0.8.1",
