@@ -11,7 +11,6 @@ export default async function DashboardLayout({
 }) {
   const session = await getServerSession(authOptions);
 
-  // Proteção de rota a nível de layout
   if (!session) {
     redirect("/auth/login");
   }
@@ -20,11 +19,9 @@ export default async function DashboardLayout({
     redirect("/auth/login");
   }
 
-  // Se for admin, permite acesso mesmo sem empresa
   if (session.user.role === "ADMIN") {
     return (
       <div className="flex h-screen bg-surface">
-        {/* Passamos a sessão para a Sidebar se ela precisar mostrar nome/email */}
         <Sidebar user={session.user} />
 
         <main className="flex-1 p-6 lg:p-10">
@@ -34,19 +31,18 @@ export default async function DashboardLayout({
     );
   }
 
-  // Para usuários normais, verificar empresa
   const company = await CompanyService.findByUserId(session.user.id);
   if (!company) {
     redirect("/complete-company");
   }
   if (!company.approved) {
-    // Talvez redirecionar para uma página de "aguardando aprovação"
+   
     redirect("/pending-approval");
   }
 
   return (
     <div className="flex min-h-screen bg-surface">
-      {/* Passamos a sessão para a Sidebar se ela precisar mostrar nome/email */}
+   
       <Sidebar user={session.user} />
 
       <main className="flex-1 p-6 lg:p-10">

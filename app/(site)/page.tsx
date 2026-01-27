@@ -11,7 +11,6 @@ export default async function Home() {
     <>
       <AgroHeroWithStats />
       <AgroProductsCarousel products={products} />
-      {/* <AgroCategories /> */}
       <AgroBenefits />
       <AboutSection />
     </>

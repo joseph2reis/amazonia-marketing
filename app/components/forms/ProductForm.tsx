@@ -1,6 +1,7 @@
 "use client";
-import { HiPaperClip } from "react-icons/hi";
+import { HiPaperClip, HiX, HiCheckCircle } from "react-icons/hi";
 import { useEffect, useState } from "react";
+import ProductPreviewModal from "../dashboard/ProductPreviewModal";
 
 interface ProductFormProps {
   productId?: number;
@@ -23,19 +24,25 @@ export default function ProductForm({
   onSuccess,
   onCancel,
 }: ProductFormProps) {
+  // Estados do Formulário
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
   const [category, setCategory] = useState("");
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  // Estados de Imagens
   const [images, setImages] = useState<string[]>([]);
   const [mainImage, setMainImage] = useState<string | null>(null);
+
+  // Estados de Status
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
+  // Carregar dados iniciais em caso de edição
   useEffect(() => {
     if (initialData) {
       setName(initialData.name);
@@ -51,10 +58,9 @@ export default function ProductForm({
     }
   }, [initialData]);
 
-  // Função para gerar slug automaticamente
+  // Gerador de Slug
   function handleNameChange(value: string) {
     setName(value);
-
     if (!productId) {
       const generatedSlug = value
         .normalize("NFD")
@@ -64,15 +70,65 @@ export default function ProductForm({
         .replace(/[^\w\s-]/g, "")
         .replace(/[\s_-]+/g, "-")
         .replace(/^-+|-+$/g, "");
-
       setSlug(generatedSlug);
     }
   }
 
+  // Lógica de Upload para Cloudinary
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+    setUploadError(null);
+    const uploadedUrls: string[] = [];
+
+    for (const file of Array.from(files)) {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || "Falha no upload");
+
+        uploadedUrls.push(data.url);
+      } catch (err: any) {
+        setUploadError(`Erro: ${err.message}`);
+      }
+    }
+
+    setImages((prev) => [...prev, ...uploadedUrls]);
+    if (!mainImage && uploadedUrls.length > 0) setMainImage(uploadedUrls[0]);
+    setUploading(false);
+    e.target.value = ""; // Reset do input
+  }
+
+  // Remover imagem
+  function removeImage(urlToRemove: string) {
+    setImages((prev) => prev.filter((url) => url !== urlToRemove));
+    if (mainImage === urlToRemove) {
+      const remaining = images.filter((url) => url !== urlToRemove);
+      setMainImage(remaining.length > 0 ? remaining[0] : null);
+    }
+  }
+
+  // Salvar Produto
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (images.length === 0) {
+      alert("Adicione pelo menos uma imagem.");
+      return;
+    }
+
     setSaving(true);
 
+    // Organiza para que a imagem principal seja a primeira no array
     const orderedImages = mainImage
       ? [mainImage, ...images.filter((img) => img !== mainImage)]
       : images;
@@ -82,73 +138,79 @@ export default function ProductForm({
       slug,
       description,
       price: Number(price),
-      stock: Number(stock), // Enviando como número para o Prisma
+      stock: Number(stock),
       category,
       images: orderedImages,
     };
 
-    const res = await fetch(
-      productId ? `/api/products/${productId}` : "/api/products",
-      {
-        method: productId ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      },
-    );
+    try {
+      const res = await fetch(
+        productId ? `/api/products/${productId}` : "/api/products",
+        {
+          method: productId ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
 
-    setSaving(false);
-
-    if (!res.ok) {
-      alert("Erro ao salvar produto");
-      return;
+      if (!res.ok) throw new Error("Erro ao salvar");
+      onSuccess();
+    } catch (error) {
+      alert("Erro ao salvar produto. Tente novamente.");
+    } finally {
+      setSaving(false);
     }
-
-    onSuccess();
   }
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="
-    rounded-2xl border border-border bg-surface-strong 
-    p-3 sm:p-6 
-    space-y-4 
-    shadow-md 
-    w-full
-  "
+      className="rounded-2xl border border-border bg-surface-strong p-3 sm:p-6 space-y-4 shadow-md w-full"
     >
       <h2 className="text-lg sm:text-xl font-bold text-text">
         {productId ? "Editar produto" : "Cadastrar Novo Produto"}
       </h2>
 
+      {/* BOTÃO DE PREVIEW ADICIONADO AQUI */}
+      <button
+        type="button"
+        onClick={() => setIsPreviewOpen(true)}
+        className="flex-1 rounded-xl border border-primary/30 px-4 py-3 text-xs font-black uppercase tracking-widest text-primary hover:bg-primary/5 transition-all"
+      >
+        Visualizar anúncio
+      </button>
+
       <div className="grid gap-3 sm:gap-4 md:grid-cols-2">
-        <div>
+        {/* Nome */}
+        <div className="space-y-1">
           <label className="text-xs sm:text-sm font-bold text-text">
             Nome do Produto
           </label>
           <input
             value={name}
             onChange={(e) => handleNameChange(e.target.value)}
-            placeholder="Ex: Seu Produto"
+            placeholder="Seu produto"
             required
             className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text text-sm outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
-        <div>
+        {/* Slug */}
+        <div className="space-y-1">
           <label className="text-xs sm:text-sm font-bold text-text">
             Slug (URL)
           </label>
           <input
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
-            placeholder="ex-seu-produto"
+            placeholder="ex: seu-produto"
             required
             className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text text-sm outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
-        <div className="md:col-span-2">
+        {/* Descrição */}
+        <div className="md:col-span-2 space-y-1">
           <label className="text-xs sm:text-sm font-bold text-text">
             Descrição Detalhada
           </label>
@@ -160,7 +222,8 @@ export default function ProductForm({
           />
         </div>
 
-        <div>
+        {/* Preço */}
+        <div className="space-y-1">
           <label className="text-xs sm:text-sm font-bold text-text">
             Preço (R$)
           </label>
@@ -174,9 +237,10 @@ export default function ProductForm({
           />
         </div>
 
-        <div>
+        {/* Estoque */}
+        <div className="space-y-1">
           <label className="text-xs sm:text-sm font-bold text-text">
-            Quantidade em Estoque
+            Estoque
           </label>
           <input
             type="number"
@@ -188,7 +252,8 @@ export default function ProductForm({
           />
         </div>
 
-        <div className="md:col-span-2">
+        {/* Categoria */}
+        <div className="md:col-span-2 space-y-1">
           <label className="text-xs sm:text-sm font-bold text-text">
             Categoria
           </label>
@@ -196,60 +261,130 @@ export default function ProductForm({
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
-            placeholder="Ex: Eletronicos, Ferramentas..."
+            placeholder="Ex: frutas, cafe, queijo, mel"
             className="w-full rounded-lg border border-border px-3 py-2 bg-surface text-text text-sm outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       </div>
 
-      {/* Imagens */}
-      <div className="space-y-2 pt-1">
-        <label className="text-xs sm:text-sm font-bold flex items-center gap-2 text-text">
-          <HiPaperClip className="text-primary" /> Imagens do Produto
+      {/* Seção de Upload */}
+      <div className="space-y-3 pt-2">
+        <label className="text-xs sm:text-sm font-bold flex items-center justify-between text-text">
+          <div className="flex items-center gap-2">
+            <HiPaperClip className="text-primary" /> Imagens do Produto
+          </div>
+          {uploading && (
+            <span className="text-primary animate-pulse text-[10px] font-black uppercase">
+              Subindo fotos...
+            </span>
+          )}
         </label>
 
         <input
           type="file"
           accept="image/*"
           multiple
+          onChange={handleImageUpload}
+          disabled={uploading || saving}
           className="w-full text-sm text-text-muted border border-border rounded-lg cursor-pointer bg-surface
-      file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0
-      file:text-xs file:font-semibold file:bg-primary file:text-white"
+            file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0
+            file:text-xs file:font-semibold file:bg-primary file:text-white disabled:opacity-50"
         />
 
+        {uploadError && (
+          <p className="text-red-500 text-xs font-medium">{uploadError}</p>
+        )}
+
+        {/* Grid de Previews */}
         {images.length > 0 && (
-          <div className="flex gap-2 overflow-x-auto pb-3 pt-1">
+          <div className="flex gap-3 overflow-x-auto pb-4 pt-2 no-scrollbar">
             {images.map((url) => (
               <div
                 key={url}
-                className="relative w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-lg border border-border bg-white p-1"
+                className={`relative group w-24 h-24 sm:w-28 sm:h-28 shrink-0 rounded-xl border-2 transition-all shadow-sm
+                  ${mainImage === url ? "border-primary bg-primary/5 shadow-primary/20" : "border-border bg-white"}`}
               >
                 <img
                   src={url}
-                  className="w-full h-full rounded object-contain"
+                  className="w-full h-full rounded-lg object-cover"
+                  alt="Produto"
                 />
+
+                {/* Botão Deletar */}
+                <button
+                  type="button"
+                  onClick={() => removeImage(url)}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:scale-110 transition-transform shadow-lg"
+                >
+                  <HiX size={14} />
+                </button>
+
+                {/* Botão Definir Principal */}
+                <button
+                  type="button"
+                  onClick={() => setMainImage(url)}
+                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[8px] font-bold uppercase transition-all
+                    ${
+                      mainImage === url
+                        ? "bg-primary text-white scale-100"
+                        : "bg-surface border border-border text-text-muted opacity-0 group-hover:opacity-100"
+                    }`}
+                >
+                  {mainImage === url ? "Principal" : "Usar esta"}
+                </button>
+
+                {mainImage === url && (
+                  <HiCheckCircle
+                    className="absolute top-1 left-1 text-primary bg-white rounded-full"
+                    size={18}
+                  />
+                )}
               </div>
             ))}
           </div>
         )}
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-4">
+      {/* Ações */}
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-6 border-t border-border">
         <button
           type="button"
           onClick={onCancel}
-          className="flex-1 rounded-lg border border-border px-4 py-2 text-sm font-bold text-text"
+          disabled={saving || uploading}
+          className="flex-1 rounded-xl border border-border px-4 py-3 text-xs font-black uppercase tracking-widest text-text hover:bg-surface transition-colors disabled:opacity-50"
         >
           Descartar
         </button>
 
         <button
           type="submit"
-          className="flex-1 rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white"
+          disabled={saving || uploading}
+          className="flex-1 rounded-xl bg-primary px-4 py-3 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-primary/20 hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          {productId ? "Atualizar Produto" : "Publicar Produto"}
+          {saving ? (
+            <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          ) : productId ? (
+            "Atualizar Produto"
+          ) : (
+            "Publicar Produto"
+          )}
         </button>
       </div>
+
+      {/* Modal de Preview */}
+      <ProductPreviewModal
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        data={{
+          name,
+          description,
+          price,
+          stock,
+          category,
+          images,
+          companyName: "Minha Empresa", // Você pode pegar do context de auth se quiser
+        }}
+      />
     </form>
   );
 }

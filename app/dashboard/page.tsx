@@ -183,12 +183,12 @@ export default function DashboardPage() {
                   desc="Cadastrar e gerenciar produtos"
                   icon={<FaBoxOpen className="text-blue-500" />}
                 />
-                <QuickActionLink
+                {/* <QuickActionLink
                   href="/dashboard/orders"
                   title="Vendas e Pedidos"
                   desc="Acompanhar fluxo de saída"
                   icon={<FaShoppingCart className="text-green-500" />}
-                />
+                /> */}
               </>
             )}
           </div>

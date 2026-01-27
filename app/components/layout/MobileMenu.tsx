@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiMenu, FiX, FiLayout, FiLogOut, FiUser } from "react-icons/fi";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react"; // Adicionado
@@ -13,8 +13,20 @@ const navItems = [
 ];
 
 export default function MobileMenu() {
-  const { data: session } = useSession(); // Pega a sessão
+  const { data: session } = useSession();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
 
   return (
     <>
@@ -42,7 +54,11 @@ export default function MobileMenu() {
       >
         {/* Header do Drawer */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-border">
-          <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2">
+          <Link
+            href="/"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2"
+          >
             <Image
               src="/logo_icon.png"
               alt="logo"
@@ -71,9 +87,11 @@ export default function MobileMenu() {
                 {session.user?.email?.[0].toUpperCase()}
               </div>
               <div className="overflow-hidden">
-                <p className="text-[10px] font-medium text-text-muted uppercase tracking-widest">Bem-vindo</p>
+                <p className="text-[10px] font-medium text-text-muted uppercase tracking-widest">
+                  Bem-vindo
+                </p>
                 <p className="text-sm font-bold text-text truncate">
-                  {session.user?.email?.split('@')[0]}
+                  {session.user?.email?.split("@")[0]}
                 </p>
               </div>
             </div>
@@ -82,7 +100,9 @@ export default function MobileMenu() {
 
         {/* Navegação Principal */}
         <nav className="flex-1 flex flex-col gap-1 px-4 py-6">
-          <p className="px-2 mb-2 text-[9px] font-medium text-text-muted uppercase tracking-[0.2em]">Menu</p>
+          <p className="px-2 mb-2 text-[9px] font-medium text-text-muted uppercase tracking-[0.2em]">
+            Menu
+          </p>
           {navItems.map((item) => (
             <Link
               href={item.href}

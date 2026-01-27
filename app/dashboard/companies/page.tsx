@@ -64,7 +64,8 @@ export default function CompaniesPage() {
 
   const pendingCompanies = companies.filter((c) => !c.approved);
   const activeCompanies = companies.filter((c) => c.approved);
-  const displayList = activeTab === "PENDING" ? pendingCompanies : activeCompanies;
+  const displayList =
+    activeTab === "PENDING" ? pendingCompanies : activeCompanies;
 
   if (loading) {
     return (
@@ -77,7 +78,9 @@ export default function CompaniesPage() {
   return (
     <section className="p-6 bg-surface">
       <header className="mb-8 flex flex-col gap-1">
-        <h1 className="text-2xl font-bold text-text">Gerenciamento de Parceiros</h1>
+        <h1 className="text-2xl font-bold text-text">
+          Gerenciamento de Parceiros
+        </h1>
         <p className="text-text-muted text-sm">
           Aprove novas empresas ou gerencie as ativas no marketplace.
         </p>
@@ -131,7 +134,10 @@ export default function CompaniesPage() {
           </thead>
           <tbody className="divide-y divide-border">
             {displayList.map((company) => (
-              <tr key={company.id} className="hover:bg-surface/30 transition-colors">
+              <tr
+                key={company.id}
+                className="hover:bg-surface/30 transition-colors"
+              >
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-primary/10 text-primary rounded-lg">
@@ -139,7 +145,9 @@ export default function CompaniesPage() {
                     </div>
                     <div>
                       <p className="font-bold text-text">{company.name}</p>
-                      <p className="text-xs text-text-muted">{company.user.email}</p>
+                      <p className="text-xs text-text-muted">
+                        {company.user.email}
+                      </p>
                     </div>
                   </div>
                 </td>
@@ -192,12 +200,16 @@ export default function CompaniesPage() {
 
             <div className="flex flex-col gap-1 w-full">
               <p className="font-bold text-text text-sm">{company.name}</p>
-              <p className="text-[11px] text-text-muted">{company.user.email}</p>
+              <p className="text-[11px] text-text-muted">
+                {company.user.email}
+              </p>
               <p className="text-[11px] text-text">CNPJ: {company.cnpj}</p>
 
               <div className="text-[11px] text-text flex flex-col">
                 <span>Fone: {company.phone}</span>
-                <span className="text-primary font-bold uppercase">Zap: {company.whatssap}</span>
+                <span className="text-primary font-bold uppercase">
+                  Zap: {company.whatssap}
+                </span>
               </div>
 
               <div className="pt-2">
@@ -211,7 +223,7 @@ export default function CompaniesPage() {
                 ) : (
                   <button
                     onClick={() => updateStatus(company.id, false)}
-                    className="w-full inline-flex items-center justify-center gap-2 border border-red-300 text-red-600 px-3 py-2 rounded-xl text-[12px] font-bold"
+                    className="w-full inline-flex items-center justify-center gap-2 border border-red-300 text-red-600 px-3 py-2 rounded-xl text-[12px] font-medium"
                   >
                     <AiOutlineCloseCircle size={16} /> Desativar
                   </button>

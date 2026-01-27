@@ -59,8 +59,24 @@ export default function Sidebar({ user }: SidebarProps) {
   ];
 
   useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    // Cleanup caso o componente seja desmontado
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [mobileOpen]);
+
+  // Efeito já existente para montagem
+  useEffect(() => {
     setMounted(true);
   }, []);
+
+  if (!mounted) return null;
 
   if (!mounted) return null;
 
