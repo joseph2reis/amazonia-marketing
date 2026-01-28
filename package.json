@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "prisma generate",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -13,7 +12,7 @@
   "dependencies": {
     "@libsql/client": "0.8.1",
     "@prisma/adapter-libsql": "^7.2.0",
-    "@prisma/client": "^7.2.0",
+    "@prisma/client": "^7.3.0",
     "bcryptjs": "^3.0.3",
     "better-sqlite3": "^12.6.0",
     "cloudinary": "^2.8.0",
@@ -39,7 +38,7 @@
     "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.0.10",
-    "prisma": "^7.2.0",
+    "prisma": "^7.3.0",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5"
