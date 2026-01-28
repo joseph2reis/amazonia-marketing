@@ -54,8 +54,8 @@ export class ProductService {
                 company: {
                     select: {
                         name: true,
-                        cel: true,   // Necessário para o WhatsApp
-                        phone: true  // Necessário para o botão Ligar
+                        cel: true,   
+                        phone: true  
                     }
                 }
             },
