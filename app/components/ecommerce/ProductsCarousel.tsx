@@ -2,16 +2,18 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { SwiperOptions } from "swiper/types";
-import { Navigation, Pagination } from "swiper/modules";
+import { Grid, Navigation, Pagination } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import "swiper/css/grid";
 
 import { motion } from "framer-motion";
 import AgroCard from "./Card";
 
-// Definimos o tipo esperado baseado no seu Schema do Prisma
+
+
 interface ProductData {
   id: number;
   name: string;
@@ -27,19 +29,36 @@ interface Props {
 }
 
 const swiperConfig: SwiperOptions = {
-  modules: [Navigation, Pagination],
+  modules: [Navigation, Pagination, Grid],
   spaceBetween: 24,
-  loop: true,
+
+  grid: {
+    rows: 2,
+    fill: "row", 
+  },
+
+  slidesPerView: 4,
+
   pagination: { clickable: true },
+
   navigation: {
     nextEl: ".agro-next",
     prevEl: ".agro-prev",
   },
+
   breakpoints: {
-    0: { slidesPerView: 1.1 },
-    640: { slidesPerView: 2.1 },
-    1024: { slidesPerView: 3.2 },
-    1280: { slidesPerView: 4 },
+    0: {
+      slidesPerView: 1,
+      grid: { rows: 1 },
+    },
+    640: {
+      slidesPerView: 2,
+      grid: { rows: 2 },
+    },
+    1024: {
+      slidesPerView: 4,
+      grid: { rows: 2 },
+    },
   },
 };
 
