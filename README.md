@@ -262,8 +262,10 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 👥 Equipe
 
-- **Joseph Reis** - Desenvolvedor Full-Stack
-- **Comunidade** - Contribuições abertas
+- **Josenildo Reis** 
+- **Pâmela Costa**
+- **Ariane**
+- **Jhulielson**
 
 ## 📞 Suporte
 
